@@ -1,0 +1,22 @@
+{
+    "schemaVersion": 1,
+    "id": "${mod_id}",
+    "version": "${mod_version}",
+
+    "name": "${mod_name}",
+    "description": "Simple configuration library made for Minecraft modders.",
+    "authors": [
+        "UnifyCraft Team"
+    ],
+    "contact": {
+        "homepage": "https://www.unifycraft.xyz/",
+        "sources": "https://github.com/UnifyCraft/Configured"
+    },
+
+    "license": "LGPL-3.0",
+    "icon": "assets/configured/logo.png",
+
+    "depends": {
+        "fabricloader": ">=0.12.12"
+    }
+}
