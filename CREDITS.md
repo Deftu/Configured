@@ -1,2 +1,0 @@
-- Slider: [EvergreenHUD](https://github.com/isXander/EvergreenHUD)
-- Colour picker: [Vigilance](https://github.com/Sk1erLLC/Vigilance)
