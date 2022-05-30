@@ -21,7 +21,7 @@ class OptionSerializer {
     val initialized: Boolean
         get() = this::config.isInitialized && this::collector.isInitialized
     var dirty = false
-    //#if MC<=11404
+    //#if MC<=11502
     private val jsonParser = JsonParser()
     //#endif
 
@@ -71,7 +71,7 @@ class OptionSerializer {
     }
 
     fun parseJson(str: String) =
-        //#if MC<=11404
+        //#if MC<=11502
         jsonParser.parse(str)
         //#else
         //$$ JsonParser.parseString(str)
