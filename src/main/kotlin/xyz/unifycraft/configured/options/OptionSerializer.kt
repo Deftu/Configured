@@ -16,6 +16,7 @@ class OptionSerializer {
     private lateinit var file: File
     private val gson = GsonBuilder()
         .registerTypeAdapter(Color::class.java, ColorTypeAdapter())
+        .registerTypeAdapter(File::class.java, FileTypeAdapter())
         .setPrettyPrinting()
         .create()
     val initialized: Boolean
@@ -46,6 +47,7 @@ class OptionSerializer {
         if (!dirty) return
         val json = parseJson(file.readText())?.asJsonObject ?: JsonObject()
         for (option in collector.get()) {
+            if (!option.type.serializable) continue
             val name = option.name.lowercase().replace(" ", "_")
             val category = option.category.lowercase().replace(" ", "_")
             val categoryJson = json[category]?.asJsonObject ?: JsonObject()
@@ -61,6 +63,7 @@ class OptionSerializer {
         if (!initialized) throw IllegalStateException("OptionSerializer not initialized!")
         val json = parseJson(file.readText())?.asJsonObject ?: JsonObject()
         for (option in collector.get()) {
+            if (!option.type.serializable) continue
             val name = option.name.lowercase().replace(" ", "_")
             val category = option.category.lowercase().replace(" ", "_")
             val categoryJson = json[category]?.asJsonObject ?: JsonObject()
@@ -106,4 +109,13 @@ private class ColorTypeAdapter : TypeAdapter<Color>() {
         `in`.endObject()
         return Color(red, green, blue, alpha)
     }
+}
+
+private class FileTypeAdapter : TypeAdapter<File>() {
+    override fun write(out: JsonWriter, value: File) {
+        out.value(value.absolutePath)
+    }
+
+    override fun read(`in`: JsonReader) =
+        File(`in`.nextString())
 }

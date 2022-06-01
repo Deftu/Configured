@@ -1,6 +1,7 @@
 package xyz.unifycraft.configured.options
 
 import java.awt.Color
+import java.io.File
 
 enum class OptionType(
     val type: Class<*>,
@@ -13,5 +14,6 @@ enum class OptionType(
     PERCENTAGE(Float::class.java, true),
     INTEGER(Int::class.java, true),
     COLOR(Color::class.java, true),
+    FILE(File::class.java, true),
     BUTTON(Nothing::class.java, false)
 }

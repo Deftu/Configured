@@ -45,6 +45,7 @@ object AnnotationOptionProcessor : OptionProcessor {
         is PercentageOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.PERCENTAGE, mapOf("min" to annotation.min, "max" to annotation.max))
         is IntegerOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.INTEGER, mapOf("min" to annotation.min, "max" to annotation.max))
         is ColorOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.COLOR, mapOf("alpha" to annotation.alpha))
+        is FileOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.FILE, mapOf("extensions" to annotation.extensions, "directory" to annotation.directory))
         else -> null
     }
 }

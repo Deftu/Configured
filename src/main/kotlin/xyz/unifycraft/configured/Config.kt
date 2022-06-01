@@ -13,6 +13,8 @@ abstract class Config(
     private val serializer = OptionSerializer()
     override val options = mutableListOf<Option>()
 
+    // Initialization
+
     fun initialize() {
         // Collect our options.
         collector.collect(this)
@@ -24,12 +26,20 @@ abstract class Config(
         // Save any new options.
         markDirty()
         save()
+
+        // Run any operations required by the config.
+        onInitialize()
+    }
+
+    open fun onInitialize() {
     }
 
     fun addOther(configurable: Configurable) {
         collector.collect(configurable)
         load()
     }
+
+    // Serialization
 
     fun markDirty() = serializer.markDirty()
 
@@ -39,5 +49,15 @@ abstract class Config(
 
     fun load() {
         serializer.deserialize()
+    }
+
+    // Dependency/hide APIs
+
+    fun hideIf(name: String, condition: Boolean) {
+        TODO("Not implemented")
+    }
+
+    fun makeDependant(name: String, dependencyName: String) {
+        TODO("Not implemented")
     }
 }

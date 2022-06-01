@@ -2,11 +2,10 @@ package xyz.unifycraft.configured.options.annnotations
 
 import xyz.unifycraft.configured.options.Option
 
-@Target(AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
-annotation class ParagraphOption(
+annotation class FileOption(
     val name: String,
     val description: String = "",
     val hidden: Boolean = Option.DEFAULT_HIDDEN,
-    val protectedText: Boolean = false,
-    val limit: Int = 128
+    val extensions: Array<String> = [],
+    val directory: Boolean = false
 )

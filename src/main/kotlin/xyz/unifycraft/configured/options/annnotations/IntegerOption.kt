@@ -2,6 +2,7 @@ package xyz.unifycraft.configured.options.annnotations
 
 import xyz.unifycraft.configured.options.Option
 
+@Target(AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
 annotation class IntegerOption(
     val name: String,
     val max: Int,

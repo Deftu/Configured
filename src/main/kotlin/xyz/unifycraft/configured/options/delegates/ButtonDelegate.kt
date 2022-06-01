@@ -10,12 +10,15 @@ class ButtonDelegate(
     runnable
 ) {
     override lateinit var name: String
+    var text = ""
 }
 
 fun Configurable.button(runnable: Runnable, block: ButtonDelegate.() -> Unit): ButtonDelegate {
     val delegate = ButtonDelegate(runnable)
     block(delegate)
-    options.add(Option(delegate.name, delegate.description, delegate.category, delegate.default, delegate.hidden, OptionType.BUTTON, mapOf(), {
+    options.add(Option(delegate.name, delegate.description, delegate.category, delegate.default, delegate.hidden, OptionType.BUTTON, mapOf(
+        "text" to delegate.text
+    ), {
         delegate.default.run()
     }, {
         throw UnsupportedOperationException("Cannot set a button option!")
