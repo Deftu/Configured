@@ -4,6 +4,7 @@ import xyz.unifycraft.configured.Configurable
 import xyz.unifycraft.configured.options.Option
 import xyz.unifycraft.configured.options.OptionType
 import xyz.unifycraft.configured.options.annnotations.*
+import xyz.unifycraft.configured.utils.setAccessibility
 
 object AnnotationOptionProcessor : OptionProcessor {
     override fun process(configurable: Configurable): List<Option> {
@@ -11,11 +12,7 @@ object AnnotationOptionProcessor : OptionProcessor {
         val fields = clz.declaredFields
         val options = mutableListOf<Option>()
         fields@ for (field in fields) {
-            //#if MC<=11502
-            field.isAccessible = true
-            //#else
-            //$$ field.trySetAccessible()
-            //#endif
+            field.setAccessibility(true)
             annotations@ for (annotation in field.declaredAnnotations) {
                 val data = process(annotation) ?: continue@annotations
                 val value = try {
