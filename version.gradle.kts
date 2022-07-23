@@ -9,6 +9,8 @@ plugins {
     `maven-publish`
 }
 
+base.archivesName.set("${modData.name}-${mcData.versionStr}-${mcData.loader.name}".toLowerCase())
+
 loomHelper {
     disableRunConfigs(GameSide.SERVER)
     useProperty("elementa.dev", "true", GameSide.CLIENT)
@@ -28,8 +30,10 @@ dependencies {
     }
 }
 
-tasks {
-    jar {
-        archiveBaseName.set("${modData.name}-${mcData.versionStr}-${mcData.loader.name}".toLowerCase())
+afterEvaluate {
+    publishing.publications.getByName<MavenPublication>("mavenJava") {
+        group = modData.group
+        artifactId = base.archivesName.get()
+        version = modData.version
     }
 }
