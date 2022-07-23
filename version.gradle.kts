@@ -18,7 +18,10 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
     api(libs.versions.elementa.map {
-        "gg.essential:elementa-${mcData.versionStr}-${mcData.loader.name}:$it"
+        "gg.essential:elementa-${when(mcData.version) {
+            11900 -> "1.18.1"
+            else -> mcData.versionStr
+        }}-${mcData.loader.name}:$it"
     }.get()) {
         exclude(module = "kotlin-reflect")
         exclude(module = "kotlin-stdlib-jdk8")

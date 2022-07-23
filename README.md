@@ -1,7 +1,7 @@
 <div align="center">
 
 # [`Configured`]
-a powerful configuration library
+A powerful configuration library
 for **Minecraft modding** in both
 Kotlin and Java.
 
@@ -13,8 +13,5 @@ Kotlin and Java.
 **&copy; 2022 UnifyCraft**
 
 </div>
-
-[gson]: .idea
-[elementa]: .idea
 
 [lgpl3]: https://www.gnu.org/licenses/lgpl-3.0.en.html
