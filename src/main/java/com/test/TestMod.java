@@ -1,29 +1,84 @@
 package com.test;
 
-//#if MC==10809
 import com.google.common.base.Stopwatch;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import gg.essential.universal.UScreen;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import java.io.File;
 
+//#if FORGE
+//#if MC<=11202
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+//#else
+//$$ import net.minecraftforge.eventbus.api.SubscribeEvent;
+//$$ import net.minecraftforge.event.TickEvent;
+//$$ import net.minecraftforge.common.MinecraftForge;
+//$$ import net.minecraftforge.fml.common.Mod;
+//$$
+//#endif
+//#else
+//#if FABRIC
+//$$ import net.fabricmc.api.ClientModInitializer;
+//$$ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+//#endif
+//#endif
+
+//#if FABRIC
+//$$ public class TestMod implements ClientModInitializer {
+//#else
+//#if MC<=11202
 @Mod(modid = "testmod")
+//#else
+//$$ @Mod(value = "testmod")
+//#endif
 public class TestMod {
+//#endif
+
     private static Logger logger = LogManager.getLogger("TestMod");
 
     private TestConfigAnnotation configAnnotation;
     private TestConfigDelegate configDelegate;
     private TestConfigDsl configDsl;
 
-    @Mod.EventHandler
-    public void preInitialize(FMLPreInitializationEvent event) {
+    //#if FABRIC
+    //$$ public void onInitializeClient() {
+    //$$     initialize();
+    //$$     ClientTickEvents.START_CLIENT_TICK.register(event -> tick());
+    //$$ }
+    //#else
+    //#if MC<=11202
+    @EventHandler
+    public void fmlInitialize(FMLInitializationEvent event) {
+        initialize();
+        MinecraftForge.EVENT_BUS.register(this);
+    }
+    //#else
+    //$$ {
+    //$$     initialize();
+    //$$     MinecraftForge.EVENT_BUS.register(this);
+    //$$ }
+    //#endif
+
+    @SubscribeEvent
+    public void tick(TickEvent.ClientTickEvent event) {
+        tick();
+    }
+    //#endif
+
+    private void initialize() {
+        File configDir = new File("config");
         Stopwatch stopwatch = Stopwatch.createStarted();
         logger.info("Loading TestMod");
         logger.info(">>>>>>>>>>");
 
-        configAnnotation = new TestConfigAnnotation(event.getModConfigurationDirectory());
-        configDelegate = new TestConfigDelegate(event.getModConfigurationDirectory());
-        configDsl = new TestConfigDsl(event.getModConfigurationDirectory());
+        configAnnotation = new com.test.TestConfigAnnotation(configDir);
+        configDelegate = new com.test.TestConfigDelegate(configDir);
+        configDsl = new com.test.TestConfigDsl(configDir);
 
         logger.info("Performing tasks on annotation-based config...");
         logger.info("-----");
@@ -63,5 +118,10 @@ public class TestMod {
 
         logger.info("TestMod loaded in {}ms", stopwatch.elapsed(java.util.concurrent.TimeUnit.MILLISECONDS));
     }
+
+    private void tick() {
+        if (!(UScreen.getCurrentScreen() instanceof UScreen)) {
+            UScreen.displayScreen(configAnnotation.menu());
+        }
+    }
 }
-//#endif

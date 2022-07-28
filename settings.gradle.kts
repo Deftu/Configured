@@ -20,7 +20,7 @@ pluginManagement {
     }
 
     plugins {
-        id("xyz.unifycraft.gradle.multiversion-root") version("1.9.2")
+        id("xyz.unifycraft.gradle.multiversion-root") version("1.9.14")
     }
 }
 

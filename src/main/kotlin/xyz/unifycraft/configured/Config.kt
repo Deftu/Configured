@@ -1,13 +1,16 @@
 package xyz.unifycraft.configured
 
+import xyz.unifycraft.configured.gui.ConfigMenu
+import xyz.unifycraft.configured.gui.original.DefaultConfigMenu
 import xyz.unifycraft.configured.options.Option
 import xyz.unifycraft.configured.options.OptionCollector
 import xyz.unifycraft.configured.options.OptionSerializer
 import java.io.File
 
-abstract class Config(
+abstract class Config @JvmOverloads constructor(
     val directory: File,
-    val title: String
+    val title: String,
+    val menu: (Config, String) -> ConfigMenu = { config, title -> DefaultConfigMenu(config, title) },
 ) : Configurable {
     val collector = OptionCollector()
     private val serializer = OptionSerializer()
@@ -60,4 +63,8 @@ abstract class Config(
     fun makeDependant(name: String, dependencyName: String) {
         TODO("Not implemented")
     }
+
+    // GUI
+
+    fun menu(): ConfigMenu = menu.invoke(this, title)
 }

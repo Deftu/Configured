@@ -122,7 +122,7 @@ fun Configurable.integer(field: Field, default: Int, block: IntegerOptionScope.(
     block(scope)
     field.setAccessibility(true)
     field.set(this, default)
-    options.add(Option(scope.name, scope.description, scope.category, scope.default, scope.hidden, OptionType.PERCENTAGE, mapOf(
+    options.add(Option(scope.name, scope.description, scope.category, scope.default, scope.hidden, OptionType.INTEGER, mapOf(
         "min" to scope.min,
         "max" to scope.max
     ), {
@@ -144,7 +144,7 @@ fun Configurable.color(field: Field, default: Color, block: ColorOptionScope.() 
     block(scope)
     field.setAccessibility(true)
     field.set(this, default)
-    options.add(Option(scope.name, scope.description, scope.category, scope.default, scope.hidden, OptionType.PERCENTAGE, mapOf(
+    options.add(Option(scope.name, scope.description, scope.category, scope.default, scope.hidden, OptionType.COLOR, mapOf(
         "alpha" to scope.alpha
     ), {
         scope.field.setAccessibility(true)
