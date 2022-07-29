@@ -10,8 +10,6 @@ plugins {
     `maven-publish`
 }
 
-base.archivesName.set("${modData.name}-${mcData.versionStr}-${mcData.loader.name}".toLowerCase())
-
 loomHelper {
     disableRunConfigs(GameSide.SERVER)
     useProperty("elementa.dev", "true", GameSide.CLIENT)

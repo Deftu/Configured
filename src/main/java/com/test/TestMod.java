@@ -116,7 +116,8 @@ public class TestMod {
         logger.info("Color: {}", configDsl.getTestColor());
         logger.info("File: {}", configDsl.getTestFile());
 
-        logger.info("TestMod loaded in {}ms", stopwatch.elapsed(java.util.concurrent.TimeUnit.MILLISECONDS));
+        long elapsed = stopwatch.elapsed(java.util.concurrent.TimeUnit.MILLISECONDS);
+        logger.info("TestMod loaded in {}ms. That's {}ms per config!", elapsed, elapsed / 3);
     }
 
     private void tick() {

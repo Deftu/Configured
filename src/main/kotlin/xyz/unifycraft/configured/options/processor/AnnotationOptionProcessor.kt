@@ -10,24 +10,43 @@ object AnnotationOptionProcessor : OptionProcessor {
     override fun process(configurable: Configurable): List<Option> {
         val clz = configurable::class.java
         val fields = clz.declaredFields
+        val methods = clz.declaredMethods
         val options = mutableListOf<Option>()
+
+        // Search for options in all the fields in the class.
         fields@ for (field in fields) {
             field.setAccessibility(true)
             annotations@ for (annotation in field.declaredAnnotations) {
-                val data = process(annotation) ?: continue@annotations
-                val value = try {
+                val data = process(annotation)
+                val category = (field.declaredAnnotations.find {
+                    it is OptionCategory
+                } as? OptionCategory)?.value ?: Option.DEFAULT_CATEGORY
+                options.add(Option(data.name, data.description, category, try {
                     field.get(configurable)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     continue@fields
-                }
-                val category = (field.declaredAnnotations.find {
-                    it is OptionCategory
-                } as? OptionCategory)?.value ?: Option.DEFAULT_CATEGORY
-                options.add(Option(data.name, data.description, category, value, data.hidden, data.type, data.attributes, {
-                    value
+                }, data.hidden, data.type, data.attributes, {
+                    field.get(configurable)
                 }, {
                     field.set(configurable, it)
+                }))
+            }
+        }
+
+        // Search for options in all the methods in the class.
+        methods@ for (method in methods) {
+            method.setAccessibility(true)
+            annotations@ for (annotation in method.declaredAnnotations) {
+                val data = process(annotation)
+                val category = (method.declaredAnnotations.find {
+                    it is OptionCategory
+                } as? OptionCategory)?.value ?: Option.DEFAULT_CATEGORY
+                options.add(Option(data.name, data.description, category, {  }, data.hidden, data.type, data.attributes, {
+                    method.invoke(configurable)
+                    Runnable {  }
+                }, {
+                    throw UnsupportedOperationException("Cannot set a button option!")
                 }))
             }
         }
@@ -43,7 +62,8 @@ object AnnotationOptionProcessor : OptionProcessor {
         is IntegerOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.INTEGER, mapOf("min" to annotation.min, "max" to annotation.max))
         is ColorOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.COLOR, mapOf("alpha" to annotation.alpha))
         is FileOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.FILE, mapOf("extensions" to annotation.extensions, "directory" to annotation.directory))
-        else -> null
+        is ButtonOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.BUTTON, mapOf("text" to annotation.text))
+        else -> throw IllegalArgumentException("Unknown annotation type!")
     }
 }
 

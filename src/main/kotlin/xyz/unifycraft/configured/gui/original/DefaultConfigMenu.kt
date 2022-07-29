@@ -9,9 +9,12 @@ import gg.essential.elementa.constraints.*
 import gg.essential.elementa.constraints.animation.Animations
 import gg.essential.elementa.dsl.*
 import gg.essential.elementa.effects.OutlineEffect
+import gg.essential.elementa.utils.withAlpha
 import gg.essential.universal.GuiScale
+import gg.essential.universal.UMatrixStack
 import net.minecraft.client.Minecraft
 import xyz.unifycraft.configured.Config
+import xyz.unifycraft.configured.Configured
 import xyz.unifycraft.configured.gui.ConfigMenu
 import xyz.unifycraft.configured.gui.ConfigOptionComponent
 import xyz.unifycraft.configured.gui.ConfiguredPalette
@@ -40,6 +43,12 @@ class DefaultConfigMenu(
         width = 720.pixels
         height = 405.pixels
     } childOf window
+
+    private val gitInfo by UIText("${Configured.NAME} (${Configured.GIT_BRANCH}/${Configured.GIT_COMMIT})").constrain {
+        x = 5.pixels
+        y = 5.pixels(alignOpposite = true)
+        color = Color.WHITE.withAlpha(128).toConstraint()
+    }.setTextScale(0.8.pixels) childOf window
 
     private val headerContainer by UIContainer().constrain {
         width = 100.percent
@@ -85,15 +94,15 @@ class DefaultConfigMenu(
     } childOf mainContainer
 
     private val categoryContainer by ScrollComponent().constrain {
-        y = SiblingConstraint()
+        y = 7.5.pixels
         width = 200.pixels
         height = 100.percent
     } childOf contentContainer
     private val optionsContainer by ScrollComponent().constrain {
         x = SiblingConstraint()
-        y = SiblingConstraint()
+        y = 7.5.pixels
         width = FillConstraint()
-        height = 100.percent
+        height = 340.pixels
     } childOf contentContainer
 
     init {
@@ -125,39 +134,42 @@ class DefaultConfigMenu(
         categoryContainer.hide()
 
         // Loop over all the registered options and add them to the container.
-        val options = config.collector.get()
-        options.forEach { option ->
+        config.collector.get().forEach { option ->
             val background by UIBlock(ConfiguredPalette.backgroundVariant).constrain {
                 x = 7.5.pixels
-                y = if (options.indexOf(option) == 0) 7.5.pixels else SiblingConstraint(7.5f)
+                y = SiblingConstraint(7.5f)
                 width = 692.5.pixels
                 height = 95.5.pixels
             } childOf optionsContainer
             val name by UIText(option.name).constrain {
                 x = 36.5.pixels
                 y = CenterConstraint()
-            } childOf background
+            }.setTextScale(1.45.pixels) childOf background
             val component by createOptionComponent(option)
+            component.constrain {
+                x = 36.5.pixels(alignOpposite = true)
+                y = CenterConstraint()
+            } childOf background
         }
     }
 
     override fun createOptionComponent(option: Option) = when (option.type) {
-        OptionType.SWITCH -> ConfigSwitchComponent(option)
+        OptionType.BUTTON -> DefaultButtonComponent(option)
+        OptionType.INTEGER -> DefaultIntegerComponent(option)
+        OptionType.SWITCH -> DefaultSwitchComponent(option)
         else -> object : ConfigOptionComponent() {
             override val option: Option
                 get() = option
         }
     }
 
-    //#if MC>=11502
-    //$$ override fun resize(minecraftClient: MinecraftClient?, i: Int, j: Int) {
-    //$$     updateGuiScale()
-    //$$     super.resize(minecraftClient, i, j)
-    //$$ }
-    //#else
+    override fun onDrawScreen(matrixStack: UMatrixStack, mouseX: Int, mouseY: Int, partialTicks: Float) {
+        drawDefaultBackground()
+        super.onDrawScreen(matrixStack, mouseX, mouseY, partialTicks)
+    }
+
     override fun setWorldAndResolution(mc: Minecraft, width: Int, height: Int) {
-        updateGuiScale()
+        newGuiScale = GuiScale.scaleForScreenSize().ordinal
         super.setWorldAndResolution(mc, width, height)
     }
-    //#endif
 }
