@@ -1,4 +1,4 @@
-package xyz.unifycraft.configured.gui.original
+package xyz.unifycraft.configured.gui.components
 
 import gg.essential.elementa.components.UIBlock
 import gg.essential.elementa.components.UIContainer
@@ -7,9 +7,8 @@ import gg.essential.elementa.constraints.CenterConstraint
 import gg.essential.elementa.dsl.*
 import gg.essential.elementa.effects.OutlineEffect
 import xyz.unifycraft.configured.gui.ConfiguredPalette
-import java.awt.Color
 
-class InputBox(
+open class InputBoxComponent(
     defaultValue: String = ""
 ) : UIContainer() {
     private val background by UIBlock(ConfiguredPalette.background).constrain {
@@ -19,19 +18,19 @@ class InputBox(
         color = ConfiguredPalette.main,
         width = 2f
     ) childOf this
-    val textInput by UITextInput(
+    protected val textInput by UITextInput(
         selectionBackgroundColor = ConfiguredPalette.backgroundVariant,
         selectionForegroundColor = ConfiguredPalette.main,
         cursorColor = ConfiguredPalette.main
     ).constrain {
         x = CenterConstraint()
         y = CenterConstraint()
-        height = 50.percent
+        height = 9.pixels
     } childOf background
 
     init {
         textInput.setMinWidth(50.percent)
-        textInput.setMaxWidth(100.percent)
+        textInput.setMaxWidth(75.percent)
         textInput.setText(defaultValue)
 
         onMouseClick {

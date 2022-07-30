@@ -85,7 +85,7 @@ class DefaultConfigMenu(
     private val titleText by UIText(title).constrain {
         x = CenterConstraint()
         y = CenterConstraint()
-    }.setTextScale(1.75.pixels) childOf titleContainer
+    }.setTextScale(1.875.pixels) childOf titleContainer
 
     private val contentContainer by UIContainer().constrain {
         y = SiblingConstraint()
@@ -144,7 +144,7 @@ class DefaultConfigMenu(
             val name by UIText(option.name).constrain {
                 x = 36.5.pixels
                 y = CenterConstraint()
-            }.setTextScale(1.45.pixels) childOf background
+            }.setTextScale(1.5.pixels) childOf background
             val component by createOptionComponent(option)
             component.constrain {
                 x = 36.5.pixels(alignOpposite = true)
