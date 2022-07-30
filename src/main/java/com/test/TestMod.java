@@ -83,10 +83,8 @@ public class TestMod {
         logger.info("Performing tasks on annotation-based config...");
         logger.info("-----");
         configAnnotation.initialize();
-        logger.info("Checkbox: {}", configAnnotation.testCheckbox);
         logger.info("Switch: {}", configAnnotation.testSwitch);
         logger.info("Text: {}", configAnnotation.testText);
-        logger.info("Paragraph: {}", configAnnotation.testParagraph);
         logger.info("Percentage: {}", configAnnotation.testPercentage);
         logger.info("Integer: {}", configAnnotation.testInteger);
         logger.info("Color: {}", configAnnotation.testColor);
@@ -95,10 +93,8 @@ public class TestMod {
         logger.info("Performing tasks on delegate-based config...");
         logger.info("-----");
         configDelegate.initialize();
-        logger.info("Checkbox: {}", configDelegate.getTestCheckbox());
         logger.info("Switch: {}", configDelegate.getTestSwitch());
         logger.info("Text: {}", configDelegate.getTestText());
-        logger.info("Paragraph: {}", configDelegate.getTestParagraph());
         logger.info("Percentage: {}", configDelegate.getTestPercentage());
         logger.info("Integer: {}", configDelegate.getTestInteger());
         logger.info("Color: {}", configDelegate.getTestColor());
@@ -107,10 +103,8 @@ public class TestMod {
         logger.info("Performing tasks on dsl-based config...");
         logger.info("-----");
         configDsl.initialize();
-        logger.info("Checkbox: {}", configDsl.getTestCheckbox());
         logger.info("Switch: {}", configDsl.getTestSwitch());
         logger.info("Text: {}", configDsl.getTestText());
-        logger.info("Paragraph: {}", configDsl.getTestParagraph());
         logger.info("Percentage: {}", configDsl.getTestPercentage());
         logger.info("Integer: {}", configDsl.getTestInteger());
         logger.info("Color: {}", configDsl.getTestColor());

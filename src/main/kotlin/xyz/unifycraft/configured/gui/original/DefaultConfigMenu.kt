@@ -11,13 +11,12 @@ import gg.essential.elementa.dsl.*
 import gg.essential.elementa.effects.OutlineEffect
 import gg.essential.elementa.utils.withAlpha
 import gg.essential.universal.GuiScale
-import gg.essential.universal.UMatrixStack
-import net.minecraft.client.Minecraft
 import xyz.unifycraft.configured.Config
 import xyz.unifycraft.configured.Configured
 import xyz.unifycraft.configured.gui.ConfigMenu
-import xyz.unifycraft.configured.gui.ConfigOptionComponent
 import xyz.unifycraft.configured.gui.ConfiguredPalette
+import xyz.unifycraft.configured.gui.components.createCaretIcon
+import xyz.unifycraft.configured.gui.effects.RotateEffect
 import xyz.unifycraft.configured.options.Option
 import xyz.unifycraft.configured.options.OptionType
 import java.awt.Color
@@ -62,19 +61,23 @@ class DefaultConfigMenu(
         width = 39.5.pixels
         height = 100.percent
     } childOf headerContainer
-    private val backButtonText by UIText("<").constrain {
+    private val backButtonIcon by createCaretIcon().constrain {
         x = CenterConstraint()
         y = CenterConstraint()
-    } childOf backButton
+        width = 22.pixels
+        height = 11.5.pixels
+    } effect RotateEffect(90f) childOf backButton
     private val categoryDropdownButton by UIContainer().constrain {
         x = SiblingConstraint()
         width = 39.5.pixels
         height = 100.percent
     } childOf headerContainer
-    private val categoryDropdownButtonText by UIText("^").constrain {
+    private val categoryDropdownButtonIcon by createCaretIcon().constrain {
         x = CenterConstraint()
         y = CenterConstraint()
-    } childOf categoryDropdownButton
+        width = 22.pixels
+        height = 11.5.pixels
+    } effect RotateEffect(180f) childOf categoryDropdownButton
 
     private val titleContainer by UIContainer().constrain {
         x = CenterConstraint()
@@ -98,34 +101,49 @@ class DefaultConfigMenu(
         width = 200.pixels
         height = 100.percent
     } childOf contentContainer
-    private val optionsContainer by ScrollComponent().constrain {
+    // TODO - Add category functionality and scrollbar
+
+    private val optionsContainer by ScrollComponent(
+        pixelsPerScroll = 30f
+    ).constrain {
         x = SiblingConstraint()
         y = 7.5.pixels
         width = FillConstraint()
         height = 340.pixels
     } childOf contentContainer
+    private val optionsContainerScrollbarTrack by UIBlock(ConfiguredPalette.backgroundVariant).constrain {
+        x = 0.pixels(alignOpposite = true)
+        y = 2.pixels
+        width = 12.5.pixels
+        height = 100.percent - 2.pixels
+    } childOf contentContainer
+    private val optionsContainerScrollbarThumb by UIBlock(ConfiguredPalette.main).constrain {
+        width = 12.5.pixels
+    } childOf optionsContainerScrollbarTrack
 
     init {
         Inspector(window) childOf window
 
         // Animate the text of the back button.
         backButton.onMouseEnter {
-            backButtonText.animate {
+            backButtonIcon.animate {
                 setColorAnimation(Animations.OUT_EXP, 0.5f, ConstantColorConstraint(ConfiguredPalette.main))
             }
         }.onMouseLeave {
-            backButtonText.animate {
+            backButtonIcon.animate {
                 setColorAnimation(Animations.IN_EXP, 0.5f, ConstantColorConstraint(Color.WHITE))
             }
+        }.onMouseClick {
+            restorePreviousScreen()
         }
 
         // Animate the text of the category dropdown button.
         categoryDropdownButton.onMouseEnter {
-            categoryDropdownButtonText.animate {
+            categoryDropdownButtonIcon.animate {
                 setColorAnimation(Animations.OUT_EXP, 0.5f, ConstantColorConstraint(ConfiguredPalette.main))
             }
         }.onMouseLeave {
-            categoryDropdownButtonText.animate {
+            categoryDropdownButtonIcon.animate {
                 setColorAnimation(Animations.IN_EXP, 0.5f, ConstantColorConstraint(Color.WHITE))
             }
         }
@@ -134,6 +152,7 @@ class DefaultConfigMenu(
         categoryContainer.hide()
 
         // Loop over all the registered options and add them to the container.
+        optionsContainer.setVerticalScrollBarComponent(optionsContainerScrollbarThumb, false)
         config.collector.get().forEach { option ->
             val background by UIBlock(ConfiguredPalette.backgroundVariant).constrain {
                 x = 7.5.pixels
@@ -156,20 +175,21 @@ class DefaultConfigMenu(
     override fun createOptionComponent(option: Option) = when (option.type) {
         OptionType.BUTTON -> DefaultButtonComponent(option)
         OptionType.INTEGER -> DefaultIntegerComponent(option)
+        OptionType.FILE -> DefaultFileComponent(option)
+        OptionType.TEXT -> DefaultTextComponent(option)
+        OptionType.PERCENTAGE -> DefaultPercentageComponent(option)
+        OptionType.COLOR -> DefaultColorComponent(option)
         OptionType.SWITCH -> DefaultSwitchComponent(option)
-        else -> object : ConfigOptionComponent() {
-            override val option: Option
-                get() = option
-        }
     }
 
-    override fun onDrawScreen(matrixStack: UMatrixStack, mouseX: Int, mouseY: Int, partialTicks: Float) {
-        drawDefaultBackground()
-        super.onDrawScreen(matrixStack, mouseX, mouseY, partialTicks)
+    override fun onScreenClose() {
+        config.markDirty()
+        config.save()
+        super.onScreenClose()
     }
 
-    override fun setWorldAndResolution(mc: Minecraft, width: Int, height: Int) {
+    override fun updateGuiScale() {
         newGuiScale = GuiScale.scaleForScreenSize().ordinal
-        super.setWorldAndResolution(mc, width, height)
+        super.updateGuiScale()
     }
 }

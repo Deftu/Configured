@@ -12,21 +12,14 @@ class TestConfigDsl(
     directory = File(configDir, "TestMod DSL"),
     title = "Test Mod"
 ) {
-    var testCheckbox = false
     var testSwitch = false
     var testText = ""
-    var testParagraph = ""
     var testPercentage = 0f
     var testInteger = 0
     lateinit var testColor: Color
     lateinit var testFile: File
 
     init {
-        checkbox(::testCheckbox, true) {
-            name = "Test Checkbox"
-            description = "This is a checkbox"
-        }
-
         switch(::testSwitch, false) {
             name = "Test Switch"
             description = "This is a switch"
@@ -35,11 +28,6 @@ class TestConfigDsl(
         text(::testText, "This is a text") {
             name = "Test Text"
             description = "This is a text field"
-        }
-
-        paragraph(::testParagraph, "This is a paragraph") {
-            name = "Test Paragraph"
-            description = "This is a paragraph"
         }
 
         percentage(::testPercentage, 50f) {

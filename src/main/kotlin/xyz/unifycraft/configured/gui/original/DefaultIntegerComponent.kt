@@ -9,7 +9,7 @@ import gg.essential.elementa.dsl.*
 import gg.essential.elementa.effects.OutlineEffect
 import xyz.unifycraft.configured.gui.ConfigOptionComponent
 import xyz.unifycraft.configured.gui.ConfiguredPalette
-import xyz.unifycraft.configured.gui.components.CaretComponent
+import xyz.unifycraft.configured.gui.components.createCaretIcon
 import xyz.unifycraft.configured.gui.components.NumericInputBoxComponent
 import xyz.unifycraft.configured.gui.effects.RotateEffect
 import xyz.unifycraft.configured.options.Option
@@ -55,7 +55,7 @@ class DefaultIntegerComponent(
             inputBox.validate(numStr)
             inputBox.apply(numStr)
         }
-        val addCaret by CaretComponent().constrain {
+        val addCaret by createCaretIcon().constrain {
             x = CenterConstraint()
             y = CenterConstraint()
             width = 12.pixels
@@ -77,7 +77,7 @@ class DefaultIntegerComponent(
             inputBox.validate(numStr)
             inputBox.apply(numStr)
         }
-        val removeCaret by CaretComponent().constrain {
+        val removeCaret by createCaretIcon().constrain {
             x = CenterConstraint()
             y = CenterConstraint()
             width = 12.pixels
@@ -94,6 +94,10 @@ class DefaultIntegerComponent(
             width = 35.pixels
             height = 25.pixels
         } childOf this
+        input.textInput.onUpdate {
+            val num = it.toIntOrNull() ?: return@onUpdate
+            number = num
+        }
         inputBox = input
     }
 }

@@ -55,9 +55,7 @@ object AnnotationOptionProcessor : OptionProcessor {
 
     private fun process(annotation: Annotation) = when (annotation) {
         is SwitchOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.SWITCH)
-        is CheckboxOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.CHECKBOX)
         is TextOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.TEXT, mapOf("protected" to annotation.protectedText, "limit" to annotation.limit))
-        is ParagraphOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.PARAGRAPH, mapOf("protected" to annotation.protectedText, "limit" to annotation.limit))
         is PercentageOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.PERCENTAGE, mapOf("min" to annotation.min, "max" to annotation.max))
         is IntegerOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.INTEGER, mapOf("min" to annotation.min, "max" to annotation.max))
         is ColorOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.COLOR, mapOf("alpha" to annotation.alpha))

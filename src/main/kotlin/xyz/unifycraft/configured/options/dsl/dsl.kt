@@ -10,25 +10,6 @@ import java.lang.reflect.Field
 import kotlin.reflect.KProperty
 import kotlin.reflect.jvm.javaField
 
-// Checkbox
-
-fun Configurable.checkbox(field: Field, default: Boolean, block: CheckboxOptionScope.() -> Unit) {
-    val scope = CheckboxOptionScope(default, field)
-    block(scope)
-    field.setAccessibility(true)
-    field.set(this, default)
-    options.add(Option(scope.name, scope.description, scope.category, scope.default, scope.hidden, OptionType.CHECKBOX, mapOf(), {
-        scope.field.setAccessibility(true)
-        scope.field.get(this) ?: scope.default
-    }, {
-        scope.field.setAccessibility(true)
-        scope.field.set(this, it)
-    }))
-}
-
-fun Configurable.checkbox(property: KProperty<*>, default: Boolean, block: CheckboxOptionScope.() -> Unit) =
-    checkbox(property.toJavaField(), default, block)
-
 // Switch
 
 fun Configurable.switch(field: Field, default: Boolean, block: SwitchOptionScope.() -> Unit) {
@@ -70,28 +51,6 @@ fun Configurable.text(field: Field, default: String, block: TextOptionScope.() -
 
 fun Configurable.text(property: KProperty<*>, default: String, block: TextOptionScope.() -> Unit) =
     text(property.toJavaField(), default, block)
-
-// Paragraph
-
-fun Configurable.paragraph(field: Field, default: String, block: ParagraphOptionScope.() -> Unit) {
-    val scope = ParagraphOptionScope(default, field)
-    block(scope)
-    field.setAccessibility(true)
-    field.set(this, default)
-    options.add(Option(scope.name, scope.description, scope.category, scope.default, scope.hidden, OptionType.PARAGRAPH, mapOf(
-        "protected" to scope.protectedText,
-        "limit" to scope.limit
-    ), {
-        scope.field.setAccessibility(true)
-        scope.field.get(this) ?: scope.default
-    }, {
-        scope.field.setAccessibility(true)
-        scope.field.set(this, it)
-    }))
-}
-
-fun Configurable.paragraph(property: KProperty<*>, default: String, block: ParagraphOptionScope.() -> Unit) =
-    paragraph(property.toJavaField(), default, block)
 
 // Percentage
 

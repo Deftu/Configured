@@ -18,6 +18,13 @@ loomHelper {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
+
+    modApi(libs.versions.universalcraft.map {
+        "gg.essential:universalcraft-${mcData.versionStr}-${mcData.loader.name}:$it"
+    }.get()) {
+        exclude(module = "kotlin-reflect")
+        exclude(module = "kotlin-stdlib-jdk8")
+    }
     modApi(libs.versions.elementa.map {
         "gg.essential:elementa-${when(mcData.version) {
             11900 -> "1.18.1"
@@ -26,6 +33,11 @@ dependencies {
     }.get()) {
         exclude(module = "kotlin-reflect")
         exclude(module = "kotlin-stdlib-jdk8")
+    }
+
+    if (mcData.version >= 11602) {
+        val lwjglVersion = "3.3.0"
+        implementation("org.lwjgl:lwjgl-tinyfd:$lwjglVersion")
     }
 
     // We need Fabric API for testing purposes.

@@ -19,6 +19,7 @@ abstract class Config @JvmOverloads constructor(
     // Initialization
 
     fun initialize() {
+
         // Collect our options.
         collector.collect(this)
         serializer.initialize(this, collector)
@@ -29,6 +30,12 @@ abstract class Config @JvmOverloads constructor(
         // Save any new options.
         markDirty()
         save()
+
+        // Load the config every time the game closes.
+        Runtime.getRuntime().addShutdownHook(Thread({
+            markDirty()
+            save()
+        }, "Configured ${javaClass.simpleName} Shutdown Hook"))
 
         // Run any operations required by the config.
         onInitialize()

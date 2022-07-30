@@ -7,13 +7,11 @@ enum class OptionType(
     val type: Class<*>,
     val serializable: Boolean
 ) {
-    CHECKBOX(Boolean::class.java, true),
-    SWITCH(Boolean::class.java, true),
-    TEXT(String::class.java, true),
-    PARAGRAPH(String::class.java, true),
-    PERCENTAGE(Float::class.java, true),
-    INTEGER(Int::class.java, true),
-    COLOR(Color::class.java, true),
-    FILE(File::class.java, true),
-    BUTTON(Nothing::class.java, false)
+    SWITCH(Boolean::class.java, true), // Yep
+    TEXT(String::class.java, true), // Yep
+    PERCENTAGE(Float::class.java, true), // Nope
+    INTEGER(Int::class.java, true), // Yep
+    COLOR(Color::class.java, true), // Nope
+    FILE(File::class.java, true), // Yep
+    BUTTON(Nothing::class.java, false) // Yep
 }

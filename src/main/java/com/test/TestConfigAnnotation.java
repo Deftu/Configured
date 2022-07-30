@@ -7,17 +7,11 @@ import java.awt.*;
 import java.io.File;
 
 public class TestConfigAnnotation extends Config {
-    @CheckboxOption(name = "Test Checkbox", description = "This is a checkbox")
-    public boolean testCheckbox = true;
-
     @SwitchOption(name = "Test Switch", description = "This is a switch")
     public boolean testSwitch = false;
 
     @TextOption(name = "Test Text", description = "This is a text")
     public String testText = "This is a text";
-
-    @ParagraphOption(name = "Test Paragraph", description = "This is a paragraph")
-    public String testParagraph = "This is a paragraph";
 
     @PercentageOption(name = "Test Percentage", description = "This is a percentage", min = 0, max = 100)
     public float testPercentage = 50;

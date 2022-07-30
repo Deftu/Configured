@@ -28,15 +28,15 @@ class DefaultButtonComponent(
         val text by UIText(if (textAttr.isNullOrBlank()) option.name else textAttr).constrain {
             x = CenterConstraint()
             y = CenterConstraint()
-        }.setTextScale(1.04.pixels) childOf background
+        } childOf background
 
         onMouseEnter {
             background.animate {
-                setColorAnimation(Animations.OUT_EXP, 0.25f, ConstantColorConstraint(ConfiguredPalette.buttonVariant))
+                setColorAnimation(Animations.OUT_EXP, 0.5f, ConstantColorConstraint(ConfiguredPalette.buttonVariant))
             }
         }.onMouseLeave {
             background.animate {
-                setColorAnimation(Animations.IN_EXP, 0.25f, ConstantColorConstraint(ConfiguredPalette.button))
+                setColorAnimation(Animations.IN_EXP, 0.5f, ConstantColorConstraint(ConfiguredPalette.button))
             }
         }.onMouseClick {
             option.invoke()

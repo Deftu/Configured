@@ -11,11 +11,6 @@ class TestConfigDelegate(
     directory = File(configDir, "TestMod Delegate"),
     title = "Test Mod"
 ) {
-    var testCheckbox by checkbox(true) {
-        name = "Test Checkbox"
-        description = "This is a checkbox"
-    }
-
     var testSwitch by switch(false) {
         name = "Test Switch"
         description = "This is a switch"
@@ -24,11 +19,6 @@ class TestConfigDelegate(
     var testText by text("This is a text") {
         name = "Test Text"
         description = "This is a text"
-    }
-
-    var testParagraph by paragraph("This is a paragraph") {
-        name = "Test Paragraph"
-        description = "This is a paragraph"
     }
 
     var testPercentage by percentage(50f) {

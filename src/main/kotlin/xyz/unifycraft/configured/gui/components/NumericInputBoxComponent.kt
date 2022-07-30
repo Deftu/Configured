@@ -1,7 +1,7 @@
 package xyz.unifycraft.configured.gui.components
 
 class NumericInputBoxComponent(
-    var value: Int = 0,
+    var value: Number = 0,
     var min: Int = 0,
     var max: Int = Int.MAX_VALUE,
 ) : InputBoxComponent() {
@@ -15,9 +15,9 @@ class NumericInputBoxComponent(
     fun validate(input: String) {
         var input = input.replace(nonNumericRegex, "")
         if (input.isEmpty()) input = "0"
-        var num = input.toInt()
+        var num = input.toFloat()
         if (num < min || num > max) {
-            num = num.coerceIn(min, max)
+            num = num.coerceIn(min.toFloat(), max.toFloat())
             textInput.setText(num.toString())
         }
         value = num

@@ -18,7 +18,7 @@ open class InputBoxComponent(
         color = ConfiguredPalette.main,
         width = 2f
     ) childOf this
-    protected val textInput by UITextInput(
+    val textInput by UITextInput(
         selectionBackgroundColor = ConfiguredPalette.backgroundVariant,
         selectionForegroundColor = ConfiguredPalette.main,
         cursorColor = ConfiguredPalette.main
@@ -29,8 +29,8 @@ open class InputBoxComponent(
     } childOf background
 
     init {
-        textInput.setMinWidth(50.percent)
-        textInput.setMaxWidth(75.percent)
+        textInput.setMinWidth(95.percent)
+        textInput.setMaxWidth(95.percent)
         textInput.setText(defaultValue)
 
         onMouseClick {
