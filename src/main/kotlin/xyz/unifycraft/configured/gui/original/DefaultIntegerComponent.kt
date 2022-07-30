@@ -33,12 +33,12 @@ class DefaultIntegerComponent(
     init {
         constrain {
             width = ChildBasedSizeConstraint()
-            height = ChildBasedSizeConstraint()
+            height = 32.5.pixels
         }
 
         val operationContainer by UIContainer().constrain {
             width = 25.pixels
-            height = ChildBasedSizeConstraint(7.5f)
+            height = 32.5.pixels
         } childOf this
 
         val addBackground by UIBlock(ConfiguredPalette.background).constrain {
@@ -49,10 +49,11 @@ class DefaultIntegerComponent(
             width = 2f
         ) childOf operationContainer
         addBackground.onMouseClick {
-            println("Number: $number")
+            if (number >= maximum) return@onMouseClick
             number += 1
-            println("Number 2: $number")
-            inputBox.validate(number.toString())
+            val numStr = number.toString()
+            inputBox.validate(numStr)
+            inputBox.apply(numStr)
         }
         val addCaret by CaretComponent().constrain {
             x = CenterConstraint()
@@ -70,10 +71,11 @@ class DefaultIntegerComponent(
             width = 2f
         ) childOf operationContainer
         removeBackground.onMouseClick {
-            println("Number: $number")
+            if (number <= minimum) return@onMouseClick
             number -= 1
-            println("Number 2: $number")
-            inputBox.validate(number.toString())
+            val numStr = number.toString()
+            inputBox.validate(numStr)
+            inputBox.apply(numStr)
         }
         val removeCaret by CaretComponent().constrain {
             x = CenterConstraint()
@@ -87,7 +89,8 @@ class DefaultIntegerComponent(
             min = minimum,
             max = maximum,
         ).constrain {
-            x = SiblingConstraint(2f)
+            x = SiblingConstraint(6f)
+            y = CenterConstraint()
             width = 35.pixels
             height = 25.pixels
         } childOf this

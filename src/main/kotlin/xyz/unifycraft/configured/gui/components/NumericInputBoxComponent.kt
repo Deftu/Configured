@@ -6,6 +6,8 @@ class NumericInputBoxComponent(
     var max: Int = Int.MAX_VALUE,
 ) : InputBoxComponent() {
     init {
+        validate(value.toString())
+        apply(value.toString())
         textInput.onActivate(this::validate)
         textInput.onUpdate(this::validate)
     }
@@ -20,6 +22,8 @@ class NumericInputBoxComponent(
         }
         value = num
     }
+
+    fun apply(input: String) = textInput.setText(input)
 
     companion object {
         val nonNumericRegex = "[^0-9.]".toRegex()
