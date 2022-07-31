@@ -1,6 +1,7 @@
 package xyz.unifycraft.configured.gui.original
 
 import gg.essential.elementa.components.*
+import gg.essential.elementa.components.input.UITextInput
 import gg.essential.elementa.components.inspector.Inspector
 import gg.essential.elementa.constraints.*
 import gg.essential.elementa.constraints.animation.Animations
@@ -12,7 +13,7 @@ import xyz.unifycraft.configured.Config
 import xyz.unifycraft.configured.Configured
 import xyz.unifycraft.configured.gui.ConfigMenu
 import xyz.unifycraft.configured.gui.ConfiguredPalette
-import xyz.unifycraft.configured.gui.components.createCaretIcon
+import xyz.unifycraft.configured.gui.components.*
 import xyz.unifycraft.configured.gui.effects.RotateEffect
 import xyz.unifycraft.configured.options.Option
 import xyz.unifycraft.configured.options.OptionType
@@ -24,6 +25,8 @@ class DefaultConfigMenu(
 ) : ConfigMenu(
     newGuiScale = GuiScale.scaleForScreenSize().ordinal
 ) {
+    private var currentCategory: String = ""
+
     private val background by UIBlock(ConfiguredPalette.background).constrain {
         x = CenterConstraint()
         y = CenterConstraint()
@@ -86,6 +89,25 @@ class DefaultConfigMenu(
         x = CenterConstraint()
         y = CenterConstraint()
     }.setTextScale(1.875.pixels) childOf titleContainer
+
+    private val searchContainer by UIContainer().constrain {
+        x = 12.5.pixels(alignOpposite = true)
+        y = CenterConstraint()
+        width = ChildBasedSizeConstraint()
+        height = 100.percent
+    } childOf headerContainer
+    private val searchIcon by createSearchIcon().constrain {
+        x = 0.pixels(alignOpposite = true)
+        y = CenterConstraint()
+        width = 25.pixels
+        height = 25.pixels
+    } childOf searchContainer
+    private val searchInput by InputBoxComponent().constrain {
+        x = SiblingConstraint(7.5f, alignOpposite = true)
+        y = CenterConstraint()
+        width = 125.pixels
+        height = 25.pixels
+    } childOf searchContainer
 
     private val contentContainer by UIContainer().constrain {
         y = SiblingConstraint()
@@ -220,6 +242,25 @@ class DefaultConfigMenu(
         // Switch to the category of the initial option in the list.
         switchCategory(options.first().category)
 
+        // Setup the search input.
+        searchInput.hide()
+        searchInput.textInput.onActivate {
+            if (currentCategory.isBlank()) throw IllegalStateException("No category is selected.")
+            switchCategory(currentCategory, it)
+            searchInput.hide()
+        }
+        searchIcon.onMouseEnter {
+            searchIcon.animate {
+                setColorAnimation(Animations.OUT_EXP, 0.5f, ConstantColorConstraint(ConfiguredPalette.main))
+            }
+        }.onMouseLeave {
+            searchIcon.animate {
+                setColorAnimation(Animations.OUT_EXP, 0.5f, ConstantColorConstraint(Color.WHITE))
+            }
+        }.onMouseClick {
+            searchInput.unhide()
+        }
+
         // When we click outside the category dropdown, hide it.
         contentContainer.onMouseClick {
             if (!contentContainer.children.contains(categoryAreaContainer) || it.target == categoryAreaContainer) return@onMouseClick
@@ -229,10 +270,22 @@ class DefaultConfigMenu(
         }
     }
 
-    private fun switchCategory(category: String) {
+    private fun switchCategory(category: String, filter: String = "") {
+        currentCategory = category
         optionsContainer.clearChildren()
         optionsContainer.setVerticalScrollBarComponent(optionsContainerScrollbarThumb, false)
-        val options = config.collector.get().filter { it.category == category }
+        val options = config.collector.get().filter { option ->
+            val categoryMatch = option.category == category
+            var filterMatch = filter.isBlank()
+            if (!filterMatch) {
+                filterMatch = option.localizedName.ifBlank {
+                    option.name
+                }.contains(filter, true) || option.tags.any { searchTag ->
+                    searchTag.contains(filter, true)
+                }
+            }
+            categoryMatch && filterMatch
+        }
         options.forEach { option ->
             val background by UIBlock(ConfiguredPalette.backgroundVariant).constrain {
                 x = 7.5.pixels
@@ -240,7 +293,9 @@ class DefaultConfigMenu(
                 width = 692.5.pixels
                 height = 95.5.pixels
             } childOf optionsContainer
-            val name by UIText(option.name).constrain {
+            val name by UIText(option.localizedName.ifBlank {
+                option.name
+            }).constrain {
                 x = 36.5.pixels
                 y = CenterConstraint()
             }.setTextScale(1.5.pixels) childOf background

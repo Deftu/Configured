@@ -6,3 +6,4 @@ import gg.essential.elementa.dsl.*
 import java.awt.Color
 
 fun createCaretIcon() = UIImage.ofResourceCached("/assets/configured/icons/caret.png")
+fun createSearchIcon() = UIImage.ofResourceCached("/assets/configured/icons/search.png")

@@ -29,8 +29,8 @@ open class InputBoxComponent(
     } childOf background
 
     init {
-        textInput.setMinWidth(95.percent)
-        textInput.setMaxWidth(95.percent)
+        textInput.setMinWidth(90.percent)
+        textInput.setMaxWidth(90.percent)
         textInput.setText(defaultValue)
 
         onMouseClick {

@@ -35,7 +35,7 @@ public class TestConfigAnnotation extends Config {
     public boolean testSwitch2 = true;
 
     @OptionCategory("Category 2 Eletric Boogaloo")
-    @ColorOption(name = "Test Color 2", description = "This is a color")
+    @ColorOption(name = "Test Color 2", description = "This is a color", alpha = true)
     public Color testColor2 = Color.RED;
 
     public TestConfigAnnotation(File configDir) {

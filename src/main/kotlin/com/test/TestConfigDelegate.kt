@@ -24,8 +24,8 @@ class TestConfigDelegate(
     var testPercentage by percentage(50f) {
         name = "Test Percentage"
         description = "This is a percentage"
-        min = 0f
-        max = 100f
+        min = 0
+        max = 100
     }
 
     var testInteger by integer(5) {

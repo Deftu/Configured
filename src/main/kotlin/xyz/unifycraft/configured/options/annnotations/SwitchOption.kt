@@ -4,7 +4,29 @@ import xyz.unifycraft.configured.options.Option
 
 @Target(AnnotationTarget.PROPERTY, AnnotationTarget.FIELD)
 annotation class SwitchOption(
+    /**
+     * The serializable name of the option,
+     * and the default if the localized
+     * name is blank.
+     */
     val name: String,
+    /**
+     * The localized name of the option.
+     */
+    val localizedName: String = "",
+    /**
+     * The description of the option.
+     */
     val description: String = "",
-    val hidden: Boolean = Option.DEFAULT_HIDDEN
+    /**
+     * Whether the option is hidden
+     * from the user.
+     */
+    val hidden: Boolean = Option.DEFAULT_HIDDEN,
+    /**
+     * The tags that can be used to
+     * search for the option in the
+     * default UI.
+     */
+    val tags: Array<String> = [],
 )

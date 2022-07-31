@@ -3,12 +3,12 @@ package xyz.unifycraft.configured.gui.original
 import gg.essential.elementa.components.UIBlock
 import gg.essential.elementa.components.UIContainer
 import gg.essential.elementa.constraints.CenterConstraint
-import gg.essential.elementa.constraints.ChildBasedSizeConstraint
 import gg.essential.elementa.constraints.SiblingConstraint
 import gg.essential.elementa.dsl.*
 import gg.essential.elementa.effects.OutlineEffect
 import xyz.unifycraft.configured.gui.ConfigOptionComponent
 import xyz.unifycraft.configured.gui.ConfiguredPalette
+import xyz.unifycraft.configured.gui.components.InputBoxComponent
 import xyz.unifycraft.configured.options.Option
 import java.awt.Color
 
@@ -28,18 +28,29 @@ class DefaultColorComponent(
 
     init {
         constrain {
-            width = 25.pixels
+            width = 125.pixels
             height = 25.pixels
         }
 
-        val colorBox by UIBlock(colorOption).constrain {
+        val mainContainer by UIContainer().constrain {
+            width = 125.pixels
+            height = 25.pixels
+        } childOf this
+        val input by InputBoxComponent(
+            defaultValue = createColorString(colorOption)
+        ).constrain {
+            width = 100.percent
+            height = 100.percent
+        } childOf mainContainer
+        val colorIndicator by UIBlock(colorOption).constrain {
+            x = 6.5.pixels(alignOpposite = true)
             y = CenterConstraint()
             width = 25.pixels
             height = 25.pixels
         } effect OutlineEffect(
             color = ConfiguredPalette.main,
             width = 2f
-        ) childOf this
+        ) childOf mainContainer
 
         val colorPicker by ColorPicker(
             value = colorOption,
@@ -50,7 +61,22 @@ class DefaultColorComponent(
         } childOf this
         colorPicker.hide()
 
-        colorBox.onMouseClick {
+        input.textInput.onActivate { hex ->
+            println("hex: $hex")
+            var hex = hex.replaceFirst("#", "")
+            println("hex reduced: $hex")
+            if (hex.length == 3) {
+                val chars = listOf(hex[0], hex[0], hex[1], hex[1], hex[2], hex[2])
+                hex = chars.joinToString("")
+            } else if (hex.length != 6) return@onActivate
+            hex = "0x$hex"
+            println("hex eval: $hex")
+            val color = Color.decode(hex)
+            println("color: $color")
+            colorOption = color
+        }
+
+        colorIndicator.onMouseClick {
             println("clicked color indicator")
             if (!this@DefaultColorComponent.children.contains(colorPicker)) {
                 println("unhiding color picker")
@@ -64,10 +90,15 @@ class DefaultColorComponent(
         }
 
         colorPicker.onValueChanged {
-            colorBox.setColor(it)
+            colorIndicator.setColor(it)
             colorOption = it
         }
     }
+
+    private fun createColorString(color: Color) =
+        "#%06x".format(color.rgb and 0xffffff) + if (hasAlpha) {
+            "%02x".format(color.alpha)
+        } else ""
 }
 
 /**

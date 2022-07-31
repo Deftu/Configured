@@ -11,6 +11,6 @@ class PercentageOptionScope(
     field
 ) {
     override lateinit var name: String
-    var min by Delegates.notNull<Float>()
-    var max by Delegates.notNull<Float>()
+    var min by Delegates.notNull<Int>()
+    var max by Delegates.notNull<Int>()
 }

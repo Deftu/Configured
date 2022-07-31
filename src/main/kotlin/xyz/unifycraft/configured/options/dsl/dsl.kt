@@ -18,7 +18,7 @@ fun Configurable.switch(field: Field, default: Boolean, block: SwitchOptionScope
     field.setAccessibility(true)
     field.set(this, default)
 
-    options.add(Option(scope.name, scope.description, scope.category, scope.default, scope.hidden, OptionType.SWITCH, mapOf(), {
+    options.add(Option(scope.name, scope.localizedName, scope.description, scope.category, scope.default, scope.hidden, scope.tags, OptionType.SWITCH, mapOf(), {
         scope.field.setAccessibility(true)
         scope.field.get(this) ?: scope.default
     }, {
@@ -37,7 +37,7 @@ fun Configurable.text(field: Field, default: String, block: TextOptionScope.() -
     block(scope)
     field.setAccessibility(true)
     field.set(this, default)
-    options.add(Option(scope.name, scope.description, scope.category, scope.default, scope.hidden, OptionType.TEXT, mapOf(
+    options.add(Option(scope.name, scope.localizedName, scope.description, scope.category, scope.default, scope.hidden, scope.tags, OptionType.TEXT, mapOf(
         "protected" to scope.protectedText,
         "limit" to scope.limit
     ), {
@@ -59,7 +59,7 @@ fun Configurable.percentage(field: Field, default: Float, block: PercentageOptio
     block(scope)
     field.setAccessibility(true)
     field.set(this, default)
-    options.add(Option(scope.name, scope.description, scope.category, scope.default, scope.hidden, OptionType.PERCENTAGE, mapOf(
+    options.add(Option(scope.name, scope.localizedName, scope.description, scope.category, scope.default, scope.hidden, scope.tags, OptionType.PERCENTAGE, mapOf(
         "min" to scope.min,
         "max" to scope.max
     ), {
@@ -81,7 +81,7 @@ fun Configurable.integer(field: Field, default: Int, block: IntegerOptionScope.(
     block(scope)
     field.setAccessibility(true)
     field.set(this, default)
-    options.add(Option(scope.name, scope.description, scope.category, scope.default, scope.hidden, OptionType.INTEGER, mapOf(
+    options.add(Option(scope.name, scope.localizedName, scope.description, scope.category, scope.default, scope.hidden, scope.tags, OptionType.INTEGER, mapOf(
         "min" to scope.min,
         "max" to scope.max
     ), {
@@ -103,7 +103,7 @@ fun Configurable.color(field: Field, default: Color, block: ColorOptionScope.() 
     block(scope)
     field.setAccessibility(true)
     field.set(this, default)
-    options.add(Option(scope.name, scope.description, scope.category, scope.default, scope.hidden, OptionType.COLOR, mapOf(
+    options.add(Option(scope.name, scope.localizedName, scope.description, scope.category, scope.default, scope.hidden, scope.tags, OptionType.COLOR, mapOf(
         "alpha" to scope.alpha
     ), {
         scope.field.setAccessibility(true)
@@ -124,10 +124,7 @@ fun Configurable.file(field: Field, default: File, block: FileOptionScope.() -> 
     block(scope)
     field.setAccessibility(true)
     field.set(this, default)
-    options.add(Option(scope.name, scope.description, scope.category, scope.default, scope.hidden, OptionType.FILE, mapOf(
-        "extensions" to scope.extensions,
-        "directory" to scope.directory
-    ), {
+    options.add(Option(scope.name, scope.localizedName, scope.description, scope.category, scope.default, scope.hidden, scope.tags, OptionType.FILE, mapOf(), {
         scope.field.setAccessibility(true)
         scope.field.get(this) ?: scope.default
     }, {

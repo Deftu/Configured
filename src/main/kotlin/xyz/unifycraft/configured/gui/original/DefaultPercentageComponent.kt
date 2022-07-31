@@ -20,7 +20,7 @@ import java.text.DecimalFormat
 class DefaultPercentageComponent(
     override val option: Option
 ) : ConfigOptionComponent() {
-    private val numberFormat = DecimalFormat("#.00")
+    private val numberFormat = DecimalFormat("0.00")
 
     var number: Float
         get() = option.invoke().toString().toFloat()

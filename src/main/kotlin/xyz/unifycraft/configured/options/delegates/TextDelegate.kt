@@ -17,7 +17,7 @@ class TextDelegate(
 fun Configurable.text(default: String, block: TextDelegate.() -> Unit): TextDelegate {
     val delegate = TextDelegate(default)
     block(delegate)
-    options.add(Option(delegate.name, delegate.description, delegate.category, delegate.default, delegate.hidden, OptionType.TEXT, mapOf(
+    options.add(Option(delegate.name, delegate.localizedName, delegate.description, delegate.category, delegate.default, delegate.hidden, delegate.tags, OptionType.TEXT, mapOf(
         "protected" to delegate.protectedText,
         "limit" to delegate.limit
     ), {

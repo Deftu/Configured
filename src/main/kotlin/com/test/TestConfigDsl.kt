@@ -33,8 +33,8 @@ class TestConfigDsl(
         percentage(::testPercentage, 50f) {
             name = "Test Percentage"
             description = "This is a percentage"
-            min = 0f
-            max = 100f
+            min = 0
+            max = 100
         }
 
         integer(::testInteger, 5) {

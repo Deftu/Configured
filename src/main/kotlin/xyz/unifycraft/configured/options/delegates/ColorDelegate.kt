@@ -17,7 +17,7 @@ class ColorDelegate(
 fun Configurable.color(default: Color, block: ColorDelegate.() -> Unit): ColorDelegate {
     val delegate = ColorDelegate(default)
     block(delegate)
-    options.add(Option(delegate.name, delegate.description, delegate.category, delegate.default, delegate.hidden, OptionType.COLOR, mapOf(
+    options.add(Option(delegate.name, delegate.localizedName, delegate.description, delegate.category, delegate.default, delegate.hidden, delegate.tags, OptionType.COLOR, mapOf(
         "alpha" to delegate.alpha
     ), {
         delegate.value

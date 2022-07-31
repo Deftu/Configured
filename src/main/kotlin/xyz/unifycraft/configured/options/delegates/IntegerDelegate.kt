@@ -18,7 +18,7 @@ class IntegerDelegate(
 fun Configurable.integer(default: Int, block: IntegerDelegate.() -> Unit): IntegerDelegate {
     val delegate = IntegerDelegate(default)
     block(delegate)
-    options.add(Option(delegate.name, delegate.description, delegate.category, delegate.default, delegate.hidden, OptionType.INTEGER, mapOf(
+    options.add(Option(delegate.name, delegate.localizedName, delegate.description, delegate.category, delegate.default, delegate.hidden, delegate.tags, OptionType.INTEGER, mapOf(
         "min" to delegate.min,
         "max" to delegate.max
     ), {

@@ -21,12 +21,12 @@ object AnnotationOptionProcessor : OptionProcessor {
                 val category = (field.declaredAnnotations.find {
                     it is OptionCategory
                 } as? OptionCategory)?.value ?: Option.DEFAULT_CATEGORY
-                options.add(Option(data.name, data.description, category, try {
+                options.add(Option(data.name, data.localizedName, data.description, category, try {
                     field.get(configurable)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     continue@fields
-                }, data.hidden, data.type, data.attributes, {
+                }, data.hidden, data.tags.toList(), data.type, data.attributes, {
                     field.get(configurable)
                 }, {
                     field.set(configurable, it)
@@ -42,7 +42,7 @@ object AnnotationOptionProcessor : OptionProcessor {
                 val category = (method.declaredAnnotations.find {
                     it is OptionCategory
                 } as? OptionCategory)?.value ?: Option.DEFAULT_CATEGORY
-                options.add(Option(data.name, data.description, category, {  }, data.hidden, data.type, data.attributes, {
+                options.add(Option(data.name, data.localizedName, data.description, category, {  }, data.hidden, data.tags.toList(), data.type, data.attributes, {
                     method.invoke(configurable)
                     Runnable {  }
                 }, {
@@ -54,21 +54,23 @@ object AnnotationOptionProcessor : OptionProcessor {
     }
 
     private fun process(annotation: Annotation) = when (annotation) {
-        is SwitchOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.SWITCH)
-        is TextOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.TEXT, mapOf("protected" to annotation.protectedText, "limit" to annotation.limit))
-        is PercentageOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.PERCENTAGE, mapOf("min" to annotation.min, "max" to annotation.max))
-        is IntegerOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.INTEGER, mapOf("min" to annotation.min, "max" to annotation.max))
-        is ColorOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.COLOR, mapOf("alpha" to annotation.alpha))
-        is FileOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.FILE, mapOf("extensions" to annotation.extensions, "directory" to annotation.directory))
-        is ButtonOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.BUTTON, mapOf("text" to annotation.text))
+        is SwitchOption -> OptionData(annotation.name, annotation.localizedName, annotation.description, annotation.hidden, annotation.tags, OptionType.SWITCH)
+        is TextOption -> OptionData(annotation.name, annotation.localizedName, annotation.description, annotation.hidden, annotation.tags, OptionType.TEXT, mapOf("protected" to annotation.protectedText, "limit" to annotation.limit))
+        is PercentageOption -> OptionData(annotation.name, annotation.localizedName, annotation.description, annotation.hidden, annotation.tags, OptionType.PERCENTAGE, mapOf("min" to annotation.min, "max" to annotation.max))
+        is IntegerOption -> OptionData(annotation.name, annotation.localizedName, annotation.description, annotation.hidden, annotation.tags, OptionType.INTEGER, mapOf("min" to annotation.min, "max" to annotation.max))
+        is ColorOption -> OptionData(annotation.name, annotation.localizedName, annotation.description, annotation.hidden, annotation.tags, OptionType.COLOR, mapOf("alpha" to annotation.alpha))
+        is FileOption -> OptionData(annotation.name, annotation.localizedName, annotation.description, annotation.hidden, annotation.tags, OptionType.FILE)
+        is ButtonOption -> OptionData(annotation.name, annotation.localizedName, annotation.description, annotation.hidden, annotation.tags, OptionType.BUTTON, mapOf("text" to annotation.text))
         else -> null
     }
 }
 
 private data class OptionData(
     val name: String,
+    val localizedName: String,
     val description: String,
     val hidden: Boolean,
+    val tags: Array<String>,
     val type: OptionType,
     val attributes: Map<String, Any> = mapOf()
 )

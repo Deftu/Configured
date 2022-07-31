@@ -11,9 +11,11 @@ abstract class OptionDelegate<T : Any> internal constructor(
     val default: T
 ) : ReadWriteProperty<Configurable, T> {
     abstract val name: String
+    open var localizedName: String = ""
     open var description: String = ""
     open var category: String = Option.DEFAULT_CATEGORY
     open var hidden: Boolean = Option.DEFAULT_HIDDEN
+    open var tags: List<String> = listOf()
     var dependencies = listOf<String>()
         private set
 
