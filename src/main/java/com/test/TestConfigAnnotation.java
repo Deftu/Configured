@@ -30,6 +30,10 @@ public class TestConfigAnnotation extends Config {
         System.out.println("Button clicked!");
     }
 
+    @OptionCategory("Category 2 Eletric Boogaloo")
+    @SwitchOption(name = "Test Switch 2", description = "This is a switch, again")
+    public boolean testSwitch2 = true;
+
     public TestConfigAnnotation(File configDir) {
         super(new File(configDir, "TestMod Annotation"), "Test Mod");
     }

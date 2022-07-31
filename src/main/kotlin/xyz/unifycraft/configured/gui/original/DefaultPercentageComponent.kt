@@ -11,10 +11,17 @@ import xyz.unifycraft.configured.gui.ConfigOptionComponent
 import xyz.unifycraft.configured.gui.ConfiguredPalette
 import xyz.unifycraft.configured.gui.components.NumericInputBoxComponent
 import xyz.unifycraft.configured.options.Option
+import java.text.DecimalFormat
 
+/**
+ * Maths for slider functionality adapted from EvergreenHUD under GPL 3.0
+ * https://github.com/isXander/EvergreenHUD/blob/86b881510698d9e75b519ada0747da12d89037ff/LICENSE.md
+ */
 class DefaultPercentageComponent(
     override val option: Option
 ) : ConfigOptionComponent() {
+    private val numberFormat = DecimalFormat("#.00")
+
     var number: Float
         get() = option.invoke().toString().toFloat()
         set(value) = option.set(value)
@@ -59,12 +66,12 @@ class DefaultPercentageComponent(
         ) childOf slider
 
         val input by NumericInputBoxComponent(
-            value = number,
+            value = numberFormat.format(number).toFloat(),
             min = minimum,
             max = maximum
         ).constrain {
-            x = SiblingConstraint(10f)
-            width = 25.pixels
+            x = SiblingConstraint(12.5f)
+            width = 35.pixels
             height = 25.pixels
         } childOf this
         input.textInput.onUpdate {
@@ -72,7 +79,7 @@ class DefaultPercentageComponent(
             number = num
         }
 
-        slider.onMouseClick {
+        thumb.onMouseClick {
             draggingOffset = it.relativeX - thumb.getWidth() / 2
             mouseDown = true
             it.stopPropagation()
@@ -81,14 +88,10 @@ class DefaultPercentageComponent(
             mouseDown = false
         }.onMouseDrag { mouseX, _, _ ->
             if (!mouseDown) return@onMouseDrag
-            println("mouseX: $mouseX")
-            println("draggingOffset: $draggingOffset")
             val clamped = (mouseX + thumb.getLeft() - draggingOffset).coerceIn(track.getLeft()..track.getRight())
-            println("clamped: $clamped")
             val percentage = ((clamped - track.getLeft()) / track.getWidth()).coerceIn(0f..1f)
-            println("percentage: $percentage")
             number = percentage * 100
-            input.apply(number.toString())
+            input.apply(numberFormat.format(number))
         }
     }
 }

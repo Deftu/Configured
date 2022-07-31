@@ -1,9 +1,6 @@
 package xyz.unifycraft.configured.gui.original
 
-import gg.essential.elementa.components.ScrollComponent
-import gg.essential.elementa.components.UIBlock
-import gg.essential.elementa.components.UIContainer
-import gg.essential.elementa.components.UIText
+import gg.essential.elementa.components.*
 import gg.essential.elementa.components.inspector.Inspector
 import gg.essential.elementa.constraints.*
 import gg.essential.elementa.constraints.animation.Animations
@@ -96,12 +93,28 @@ class DefaultConfigMenu(
         height = FillConstraint()
     } childOf mainContainer
 
+    private val categoryAreaContainer by UIContainer().constrain {
+        width = 200.pixels
+        height = 100.percent
+    } effect OutlineEffect(
+        color = ConfiguredPalette.main,
+        width = 2f,
+        sides = setOf(OutlineEffect.Side.Right)
+    ) childOf contentContainer
     private val categoryContainer by ScrollComponent().constrain {
         y = 7.5.pixels
         width = 200.pixels
         height = 100.percent
-    } childOf contentContainer
-    // TODO - Add category functionality and scrollbar
+    } childOf categoryAreaContainer
+    private val categoryContainerScrollbarTrack by UIBlock(ConfiguredPalette.backgroundVariant).constrain {
+        x = 0.pixels(alignOpposite = true)
+        y = 2.pixels
+        width = 12.5.pixels
+        height = 100.percent - 2.pixels
+    } childOf categoryAreaContainer
+    private val categoryContainerScrollbarThumb by UIBlock(ConfiguredPalette.main).constrain {
+        width = 12.5.pixels
+    } childOf categoryContainerScrollbarTrack
 
     private val optionsContainer by ScrollComponent(
         pixelsPerScroll = 30f
@@ -122,6 +135,8 @@ class DefaultConfigMenu(
     } childOf optionsContainerScrollbarTrack
 
     init {
+        // Collect all the options.
+        val options = config.collector.get()
         Inspector(window) childOf window
 
         // Animate the text of the back button.
@@ -131,7 +146,7 @@ class DefaultConfigMenu(
             }
         }.onMouseLeave {
             backButtonIcon.animate {
-                setColorAnimation(Animations.IN_EXP, 0.5f, ConstantColorConstraint(Color.WHITE))
+                setColorAnimation(Animations.OUT_EXP, 0.5f, ConstantColorConstraint(Color.WHITE))
             }
         }.onMouseClick {
             restorePreviousScreen()
@@ -144,16 +159,68 @@ class DefaultConfigMenu(
             }
         }.onMouseLeave {
             categoryDropdownButtonIcon.animate {
-                setColorAnimation(Animations.IN_EXP, 0.5f, ConstantColorConstraint(Color.WHITE))
+                setColorAnimation(Animations.OUT_EXP, 0.5f, ConstantColorConstraint(Color.WHITE))
             }
         }
 
         // The category dropdown isn't shown by default.
-        categoryContainer.hide()
+        categoryContainerScrollbarThumb.animateBeforeHide {
+            onComplete {
+                categoryContainerScrollbarTrack.hide()
+            }
+        }
+        categoryAreaContainer.hide()
+        categoryContainer.setVerticalScrollBarComponent(categoryContainerScrollbarThumb, true)
+        categoryDropdownButton.onMouseClick {
+            val rotation: RotateEffect = categoryDropdownButtonIcon.effects.firstOrNull {
+                it is RotateEffect
+            } as? RotateEffect
+                ?: throw IllegalStateException("There should be a rotation effect for the dropdown icon.")
+            if (contentContainer.children.contains(categoryAreaContainer)) {
+                categoryAreaContainer.setFloating(false)
+                categoryAreaContainer.hide()
+                rotation.angle = 180f
+            } else {
+                categoryAreaContainer.setFloating(true)
+                categoryAreaContainer.unhide()
+                rotation.angle = 0f
+            }
+        }
+        val categoriesAdded = mutableSetOf<String>()
+        options.forEach { option ->
+            if (categoriesAdded.contains(option.category)) return@forEach
+            categoriesAdded.add(option.category)
+            val category by UIWrappedText(
+                text = option.category,
+                centered = false,
+                trimText = true
+            ).constrain {
+                x = 14.pixels
+                y = SiblingConstraint(7.5f)
+                width = 100.percent - 14.pixels
+            }.setTextScale(1.45.pixels) childOf categoryContainer
+            category.onMouseEnter {
+                category.animate {
+                    setColorAnimation(Animations.OUT_EXP, 0.5f, ConstantColorConstraint(ConfiguredPalette.main))
+                }
+            }.onMouseLeave {
+                category.animate {
+                    setColorAnimation(Animations.OUT_EXP, 0.5f, ConstantColorConstraint(Color.WHITE))
+                }
+            }.onMouseClick {
+                switchCategory(option.category)
+            }
+        }
 
-        // Loop over all the registered options and add them to the container.
+        // Switch to the category of the initial option in the list.
+        switchCategory(options.first().category)
+    }
+
+    private fun switchCategory(category: String) {
+        optionsContainer.clearChildren()
         optionsContainer.setVerticalScrollBarComponent(optionsContainerScrollbarThumb, false)
-        config.collector.get().forEach { option ->
+        val options = config.collector.get().filter { it.category == category }
+        options.forEach { option ->
             val background by UIBlock(ConfiguredPalette.backgroundVariant).constrain {
                 x = 7.5.pixels
                 y = SiblingConstraint(7.5f)

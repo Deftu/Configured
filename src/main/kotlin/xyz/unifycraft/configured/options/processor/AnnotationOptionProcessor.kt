@@ -17,7 +17,7 @@ object AnnotationOptionProcessor : OptionProcessor {
         fields@ for (field in fields) {
             field.setAccessibility(true)
             annotations@ for (annotation in field.declaredAnnotations) {
-                val data = process(annotation)
+                val data = process(annotation) ?: continue@annotations
                 val category = (field.declaredAnnotations.find {
                     it is OptionCategory
                 } as? OptionCategory)?.value ?: Option.DEFAULT_CATEGORY
@@ -38,7 +38,7 @@ object AnnotationOptionProcessor : OptionProcessor {
         methods@ for (method in methods) {
             method.setAccessibility(true)
             annotations@ for (annotation in method.declaredAnnotations) {
-                val data = process(annotation)
+                val data = process(annotation) ?: continue@annotations
                 val category = (method.declaredAnnotations.find {
                     it is OptionCategory
                 } as? OptionCategory)?.value ?: Option.DEFAULT_CATEGORY
@@ -61,7 +61,7 @@ object AnnotationOptionProcessor : OptionProcessor {
         is ColorOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.COLOR, mapOf("alpha" to annotation.alpha))
         is FileOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.FILE, mapOf("extensions" to annotation.extensions, "directory" to annotation.directory))
         is ButtonOption -> OptionData(annotation.name, annotation.description, annotation.hidden, OptionType.BUTTON, mapOf("text" to annotation.text))
-        else -> throw IllegalArgumentException("Unknown annotation type!")
+        else -> null
     }
 }
 
