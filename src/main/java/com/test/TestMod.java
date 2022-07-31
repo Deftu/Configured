@@ -89,6 +89,8 @@ public class TestMod {
         logger.info("Integer: {}", configAnnotation.testInteger);
         logger.info("Color: {}", configAnnotation.testColor);
         logger.info("File: {}", configAnnotation.testFile);
+        logger.info("Switch 2: {}", configAnnotation.testSwitch2);
+        logger.info("Color 2: {}", configAnnotation.testColor2);
 
         logger.info("Performing tasks on delegate-based config...");
         logger.info("-----");

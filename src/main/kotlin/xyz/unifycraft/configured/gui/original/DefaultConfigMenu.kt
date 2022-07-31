@@ -93,9 +93,10 @@ class DefaultConfigMenu(
         height = FillConstraint()
     } childOf mainContainer
 
-    private val categoryAreaContainer by UIContainer().constrain {
+    private val categoryAreaContainer by UIBlock(ConfiguredPalette.background).constrain {
+        y = 2.pixels
         width = 200.pixels
-        height = 100.percent
+        height = 100.percent - 2.pixels
     } effect OutlineEffect(
         color = ConfiguredPalette.main,
         width = 2f,
@@ -119,9 +120,8 @@ class DefaultConfigMenu(
     private val optionsContainer by ScrollComponent(
         pixelsPerScroll = 30f
     ).constrain {
-        x = SiblingConstraint()
         y = 7.5.pixels
-        width = FillConstraint()
+        width = 100.percent
         height = 340.pixels
     } childOf contentContainer
     private val optionsContainerScrollbarTrack by UIBlock(ConfiguredPalette.backgroundVariant).constrain {
@@ -170,6 +170,9 @@ class DefaultConfigMenu(
             }
         }
         categoryAreaContainer.hide()
+        categoryAreaContainer.onMouseClick {
+            it.stopImmediatePropagation()
+        }
         categoryContainer.setVerticalScrollBarComponent(categoryContainerScrollbarThumb, true)
         categoryDropdownButton.onMouseClick {
             val rotation: RotateEffect = categoryDropdownButtonIcon.effects.firstOrNull {
@@ -209,11 +212,21 @@ class DefaultConfigMenu(
                 }
             }.onMouseClick {
                 switchCategory(option.category)
+                categoryAreaContainer.setFloating(false)
+                categoryAreaContainer.hide()
             }
         }
 
         // Switch to the category of the initial option in the list.
         switchCategory(options.first().category)
+
+        // When we click outside the category dropdown, hide it.
+        contentContainer.onMouseClick {
+            if (!contentContainer.children.contains(categoryAreaContainer) || it.target == categoryAreaContainer) return@onMouseClick
+            categoryAreaContainer.setFloating(false)
+            categoryAreaContainer.hide()
+            it.stopPropagation()
+        }
     }
 
     private fun switchCategory(category: String) {
