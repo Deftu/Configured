@@ -38,6 +38,14 @@ public class TestConfigAnnotation extends Config {
     @ColorOption(name = "Test Color 2", description = "This is a color", alpha = true)
     public Color testColor2 = Color.RED;
 
+    @OptionCategory("Category 2 Eletric Boogaloo")
+    @TextOption(name = "Test Text 2", description = "This is a text 2", limit = 40)
+    public String testText2 = "This is a text 2";
+
+    @OptionCategory("Category 2 Eletric Boogaloo")
+    @TextOption(name = "Test Text 3", description = "This is a text 3", protectedText = true)
+    public String testText3 = "This is a text 3";
+
     public TestConfigAnnotation(File configDir) {
         super(new File(configDir, "TestMod Annotation"), "Test Mod");
     }

@@ -11,5 +11,5 @@ class TextOptionScope(
 ) {
     override lateinit var name: String
     var protectedText: Boolean = false
-    var limit: Int = 128
+    var limit: Int = -1
 }

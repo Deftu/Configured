@@ -11,7 +11,7 @@ class TextDelegate(
 ) {
     override lateinit var name: String
     var protectedText: Boolean = false
-    var limit: Int = 128
+    var limit: Int = -1
 }
 
 fun Configurable.text(default: String, block: TextDelegate.() -> Unit): TextDelegate {

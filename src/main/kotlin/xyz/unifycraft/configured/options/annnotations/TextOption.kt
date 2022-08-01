@@ -39,5 +39,5 @@ annotation class TextOption(
      * The limit of characters which
      * can be entered into the text.
      */
-    val limit: Int = 128
+    val limit: Int = -1
 )

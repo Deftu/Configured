@@ -1,7 +1,6 @@
 package xyz.unifycraft.configured.gui.original
 
 import gg.essential.elementa.components.*
-import gg.essential.elementa.components.input.UITextInput
 import gg.essential.elementa.components.inspector.Inspector
 import gg.essential.elementa.constraints.*
 import gg.essential.elementa.constraints.animation.Animations
@@ -12,6 +11,7 @@ import gg.essential.universal.GuiScale
 import xyz.unifycraft.configured.Config
 import xyz.unifycraft.configured.Configured
 import xyz.unifycraft.configured.gui.ConfigMenu
+import xyz.unifycraft.configured.gui.ConfigOptionComponent
 import xyz.unifycraft.configured.gui.ConfiguredPalette
 import xyz.unifycraft.configured.gui.components.*
 import xyz.unifycraft.configured.gui.effects.RotateEffect
@@ -164,11 +164,11 @@ class DefaultConfigMenu(
         // Animate the text of the back button.
         backButton.onMouseEnter {
             backButtonIcon.animate {
-                setColorAnimation(Animations.OUT_EXP, 0.5f, ConstantColorConstraint(ConfiguredPalette.main))
+                setColorAnimation(Animations.OUT_EXP, 0.5f, ConfiguredPalette.main.toConstraint())
             }
         }.onMouseLeave {
             backButtonIcon.animate {
-                setColorAnimation(Animations.OUT_EXP, 0.5f, ConstantColorConstraint(Color.WHITE))
+                setColorAnimation(Animations.OUT_EXP, 0.5f, Color.WHITE.toConstraint())
             }
         }.onMouseClick {
             restorePreviousScreen()
@@ -177,11 +177,11 @@ class DefaultConfigMenu(
         // Animate the text of the category dropdown button.
         categoryDropdownButton.onMouseEnter {
             categoryDropdownButtonIcon.animate {
-                setColorAnimation(Animations.OUT_EXP, 0.5f, ConstantColorConstraint(ConfiguredPalette.main))
+                setColorAnimation(Animations.OUT_EXP, 0.5f, ConfiguredPalette.main.toConstraint())
             }
         }.onMouseLeave {
             categoryDropdownButtonIcon.animate {
-                setColorAnimation(Animations.OUT_EXP, 0.5f, ConstantColorConstraint(Color.WHITE))
+                setColorAnimation(Animations.OUT_EXP, 0.5f, Color.WHITE.toConstraint())
             }
         }
 
@@ -226,14 +226,19 @@ class DefaultConfigMenu(
             }.setTextScale(1.45.pixels) childOf categoryContainer
             category.onMouseEnter {
                 category.animate {
-                    setColorAnimation(Animations.OUT_EXP, 0.5f, ConstantColorConstraint(ConfiguredPalette.main))
+                    setColorAnimation(Animations.OUT_EXP, 0.5f, ConfiguredPalette.main.toConstraint())
                 }
             }.onMouseLeave {
                 category.animate {
-                    setColorAnimation(Animations.OUT_EXP, 0.5f, ConstantColorConstraint(Color.WHITE))
+                    setColorAnimation(Animations.OUT_EXP, 0.5f, Color.WHITE.toConstraint())
                 }
             }.onMouseClick {
                 switchCategory(option.category)
+                categoryDropdownButtonIcon.effects.firstOrNull {
+                    it is RotateEffect
+                }?.let {
+                    (it as RotateEffect).angle = 180f
+                }
                 categoryAreaContainer.setFloating(false)
                 categoryAreaContainer.hide()
             }
@@ -251,11 +256,11 @@ class DefaultConfigMenu(
         }
         searchIcon.onMouseEnter {
             searchIcon.animate {
-                setColorAnimation(Animations.OUT_EXP, 0.5f, ConstantColorConstraint(ConfiguredPalette.main))
+                setColorAnimation(Animations.OUT_EXP, 0.5f, ConfiguredPalette.main.toConstraint())
             }
         }.onMouseLeave {
             searchIcon.animate {
-                setColorAnimation(Animations.OUT_EXP, 0.5f, ConstantColorConstraint(Color.WHITE))
+                setColorAnimation(Animations.OUT_EXP, 0.5f, Color.WHITE.toConstraint())
             }
         }.onMouseClick {
             searchInput.unhide()
@@ -264,6 +269,11 @@ class DefaultConfigMenu(
         // When we click outside the category dropdown, hide it.
         contentContainer.onMouseClick {
             if (!contentContainer.children.contains(categoryAreaContainer) || it.target == categoryAreaContainer) return@onMouseClick
+            categoryDropdownButtonIcon.effects.firstOrNull {
+                it is RotateEffect
+            }?.let {
+                (it as RotateEffect).angle = 180f
+            }
             categoryAreaContainer.setFloating(false)
             categoryAreaContainer.hide()
             it.stopPropagation()
@@ -272,6 +282,17 @@ class DefaultConfigMenu(
 
     private fun switchCategory(category: String, filter: String = "") {
         currentCategory = category
+        optionsContainer.scrollToTop(false)
+        optionsContainer.allChildren.forEach { component ->
+            if (component !is UIBlock) return@forEach
+            val componentChildren = component.children
+            if (componentChildren.isEmpty() || componentChildren.none {
+                it is ConfigOptionComponent
+            }) return@forEach
+            (componentChildren.first {
+                it is ConfigOptionComponent
+            } as ConfigOptionComponent).closePopups()
+        }
         optionsContainer.clearChildren()
         optionsContainer.setVerticalScrollBarComponent(optionsContainerScrollbarThumb, false)
         val options = config.collector.get().filter { option ->

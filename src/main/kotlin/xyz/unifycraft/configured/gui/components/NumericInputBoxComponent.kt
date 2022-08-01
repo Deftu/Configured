@@ -9,7 +9,7 @@ class NumericInputBoxComponent(
         validate(value.toString())
         apply(value.toString())
         textInput.onActivate(this::validate)
-        textInput.onUpdate(this::validate)
+        onValueChanged(this::validate)
     }
 
     fun validate(input: String) {

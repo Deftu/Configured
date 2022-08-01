@@ -4,7 +4,6 @@ import gg.essential.elementa.components.UIBlock
 import gg.essential.elementa.components.UIText
 import gg.essential.elementa.constraints.CenterConstraint
 import gg.essential.elementa.constraints.ChildBasedSizeConstraint
-import gg.essential.elementa.constraints.ConstantColorConstraint
 import gg.essential.elementa.constraints.animation.Animations
 import gg.essential.elementa.dsl.*
 import xyz.unifycraft.configured.gui.ConfigOptionComponent
@@ -14,6 +13,9 @@ import xyz.unifycraft.configured.options.Option
 class DefaultButtonComponent(
     override val option: Option
 ) : ConfigOptionComponent() {
+    val text: String
+        get() = option.attributes["text"]?.toString() ?: "Click me!"
+
     init {
         constrain {
             width = ChildBasedSizeConstraint()
@@ -24,19 +26,18 @@ class DefaultButtonComponent(
             width = 100.pixels
             height = 30.pixels
         } childOf this
-        val textAttr = option.attributes["text"]?.toString()
-        val text by UIText(if (textAttr.isNullOrBlank()) option.name else textAttr).constrain {
+        val text by UIText(this.text).constrain {
             x = CenterConstraint()
             y = CenterConstraint()
         } childOf background
 
         onMouseEnter {
             background.animate {
-                setColorAnimation(Animations.OUT_EXP, 0.5f, ConstantColorConstraint(ConfiguredPalette.buttonVariant))
+                setColorAnimation(Animations.OUT_EXP, 0.5f, ConfiguredPalette.buttonVariant.toConstraint())
             }
         }.onMouseLeave {
             background.animate {
-                setColorAnimation(Animations.IN_EXP, 0.5f, ConstantColorConstraint(ConfiguredPalette.button))
+                setColorAnimation(Animations.IN_EXP, 0.5f, ConfiguredPalette.button.toConstraint())
             }
         }.onMouseClick {
             option.invoke()

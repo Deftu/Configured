@@ -13,17 +13,26 @@ class DefaultTextComponent(
         get() = option.invoke().toString()
         set(value) = option.set(value)
 
+    val protected: Boolean
+        get() = option.attributes["protected"]?.toString()?.toBoolean() ?: false
+    val limit: Int
+        get() = option.attributes["limit"]?.toString()?.toInt() ?: -1
+
     init {
         constrain {
             width = ChildBasedSizeConstraint()
             height = ChildBasedSizeConstraint()
         }
 
-        val input by InputBoxComponent(text).constrain {
+        val input by InputBoxComponent(
+            defaultValue = text,
+            protected = protected,
+            limit = limit
+        ).constrain {
             width = 175.pixels
             height = 25.pixels
         } childOf this
-        input.textInput.onUpdate {
+        input.onValueChanged {
             text = it
         }
     }

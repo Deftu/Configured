@@ -118,7 +118,7 @@ public class TestMod {
 
     private void tick() {
         if (!(UScreen.getCurrentScreen() instanceof UScreen)) {
-            UScreen.displayScreen(configAnnotation.menu());
+            UScreen.displayScreen(configDsl.menu());
         }
     }
 }

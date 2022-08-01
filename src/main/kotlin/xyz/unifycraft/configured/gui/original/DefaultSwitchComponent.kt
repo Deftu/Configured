@@ -26,10 +26,10 @@ class DefaultSwitchComponent(
             width = 37.5.pixels
             height = 18.75.pixels
         } effect OutlineEffect(
-            color = ConfiguredPalette.main,
+            color = fetchToggleColor(),
             width = 2f
         ) childOf this
-        val thumb by UIBlock(ConfiguredPalette.main).constrain {
+        val thumb by UIBlock(fetchToggleColor()).constrain {
             x = 0.pixels(alignOpposite = toggle)
             width = 50.percent
             height = 100.percent
@@ -38,8 +38,13 @@ class DefaultSwitchComponent(
         onMouseClick {
             toggle = !toggle
             thumb.animate {
+                (background.effects[0] as OutlineEffect)::color.animate(Animations.OUT_EXP, 0.5f, fetchToggleColor())
+                setColorAnimation(Animations.OUT_EXP, 0.5f, fetchToggleColor().toConstraint())
                 setXAnimation(Animations.OUT_EXP, 0.5f, 0.pixels(alignOpposite = toggle))
             }
         }
     }
+
+    private fun fetchToggleColor() =
+        if (toggle) ConfiguredPalette.main else ConfiguredPalette.mainVariant
 }

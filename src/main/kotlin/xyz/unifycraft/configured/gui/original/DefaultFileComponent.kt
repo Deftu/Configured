@@ -36,6 +36,11 @@ class DefaultFileComponent(
             width = 175.pixels
             height = 25.pixels
         } childOf this
+        input.onValueChanged {
+            try {
+                file = File(it)
+            } catch (_: Exception) { }
+        }
 
         val button by UIBlock(ConfiguredPalette.background).constrain {
             x = SiblingConstraint(7.5f)
