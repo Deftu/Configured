@@ -14,6 +14,13 @@ class TextDelegate(
     var limit: Int = -1
 }
 
+/**
+ * Creates a text option based
+ * on the data provided.
+ *
+ * @param default The default value of the option.
+ * @param block The metadata of the option.
+ */
 fun Configurable.text(default: String, block: TextDelegate.() -> Unit): TextDelegate {
     val delegate = TextDelegate(default)
     block(delegate)

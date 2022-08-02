@@ -13,6 +13,13 @@ class FileDelegate(
     override lateinit var name: String
 }
 
+/**
+ * Creates a file option based
+ * on the data provided.
+ *
+ * @param default The default value of the option.
+ * @param block The metadata of the option.
+ */
 fun Configurable.file(default: File, block: FileDelegate.() -> Unit): FileDelegate {
     val delegate = FileDelegate(default)
     block(delegate)

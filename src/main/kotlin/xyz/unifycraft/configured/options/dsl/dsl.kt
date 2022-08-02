@@ -12,6 +12,14 @@ import kotlin.reflect.jvm.javaField
 
 // Switch
 
+/**
+ * Creates a switch option based on the
+ * data provided.
+ *
+ * @param field The field to bind this option to.
+ * @param default The default value of the option.
+ * @param block The metadata of the option.
+ */
 fun Configurable.switch(field: Field, default: Boolean, block: SwitchOptionScope.() -> Unit) {
     val scope = SwitchOptionScope(default, field)
     block(scope)
@@ -27,11 +35,27 @@ fun Configurable.switch(field: Field, default: Boolean, block: SwitchOptionScope
     }))
 }
 
+/**
+ * Creates a text option based on the
+ * data provided.
+ *
+ * @param property The property to bind this option to.
+ * @param default The default value of the option.
+ * @param block The metadata of the option.
+ */
 fun Configurable.switch(property: KProperty<*>, default: Boolean, block: SwitchOptionScope.() -> Unit) =
     switch(property.toJavaField(), default, block)
 
 // Text
 
+/**
+ * Creates a text option based on the
+ * data provided.
+ *
+ * @param field The field to bind this option to.
+ * @param default The default value of the option.
+ * @param block The metadata of the option.
+ */
 fun Configurable.text(field: Field, default: String, block: TextOptionScope.() -> Unit) {
     val scope = TextOptionScope(default, field)
     block(scope)
@@ -49,11 +73,27 @@ fun Configurable.text(field: Field, default: String, block: TextOptionScope.() -
     }))
 }
 
+/**
+ * Creates a text option based on the
+ * data provided.
+ *
+ * @param property The property to bind this option to.
+ * @param default The default value of the option.
+ * @param block The metadata of the option.
+ */
 fun Configurable.text(property: KProperty<*>, default: String, block: TextOptionScope.() -> Unit) =
     text(property.toJavaField(), default, block)
 
 // Percentage
 
+/**
+ * Creates a percentage option based on the
+ * data provided.
+ *
+ * @param field The field to bind this option to.
+ * @param default The default value of the option.
+ * @param block The metadata of the option.
+ */
 fun Configurable.percentage(field: Field, default: Float, block: PercentageOptionScope.() -> Unit) {
     val scope = PercentageOptionScope(default, field)
     block(scope)
@@ -71,11 +111,27 @@ fun Configurable.percentage(field: Field, default: Float, block: PercentageOptio
     }))
 }
 
+/**
+ * Creates a percentage option based on the
+ * data provided.
+ *
+ * @param property The property to bind this option to.
+ * @param default The default value of the option.
+ * @param block The metadata of the option.
+ */
 fun Configurable.percentage(property: KProperty<*>, default: Float, block: PercentageOptionScope.() -> Unit) =
     percentage(property.toJavaField(), default, block)
 
 // Integer
 
+/**
+ * Creates an integer option based on the
+ * data provided.
+ *
+ * @param field The field to bind this option to.
+ * @param default The default value of the option.
+ * @param block The metadata of the option.
+ */
 fun Configurable.integer(field: Field, default: Int, block: IntegerOptionScope.() -> Unit) {
     val scope = IntegerOptionScope(default, field)
     block(scope)
@@ -93,11 +149,27 @@ fun Configurable.integer(field: Field, default: Int, block: IntegerOptionScope.(
     }))
 }
 
+/**
+ * Creates an integer option based on the
+ * data provided.
+ *
+ * @param property The property to bind this option to.
+ * @param default The default value of the option.
+ * @param block The metadata of the option.
+ */
 fun Configurable.integer(property: KProperty<*>, default: Int, block: IntegerOptionScope.() -> Unit) =
     integer(property.toJavaField(), default, block)
 
 // Color
 
+/**
+ * Creates a color option based on the
+ * data provided.
+ *
+ * @param field The field to bind this option to.
+ * @param default The default value of the option.
+ * @param block The metadata of the option.
+ */
 fun Configurable.color(field: Field, default: Color, block: ColorOptionScope.() -> Unit) {
     val scope = ColorOptionScope(default, field)
     block(scope)
@@ -114,11 +186,27 @@ fun Configurable.color(field: Field, default: Color, block: ColorOptionScope.() 
     }))
 }
 
+/**
+ * Creates a color option based on the
+ * data provided.
+ *
+ * @param property The property to bind this option to.
+ * @param default The default value of the option.
+ * @param block The metadata of the option.
+ */
 fun Configurable.color(property: KProperty<*>, default: Color, block: ColorOptionScope.() -> Unit) =
     color(property.toJavaField(), default, block)
 
 // File
 
+/**
+ * Creates a file option based on the
+ * data provided.
+ *
+ * @param field The field to bind this option to.
+ * @param default The default value of the option.
+ * @param block The metadata of the option.
+ */
 fun Configurable.file(field: Field, default: File, block: FileOptionScope.() -> Unit) {
     val scope = FileOptionScope(default, field)
     block(scope)
@@ -133,6 +221,14 @@ fun Configurable.file(field: Field, default: File, block: FileOptionScope.() -> 
     }))
 }
 
+/**
+ * Creates a file option based on the
+ * data provided.
+ *
+ * @param property The property to bind this option to.
+ * @param default The default value of the option.
+ * @param block The metadata of the option.
+ */
 fun Configurable.file(property: KProperty<*>, default: File, block: FileOptionScope.() -> Unit) =
     file(property.toJavaField(), default, block)
 

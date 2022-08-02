@@ -10,6 +10,13 @@ class SwitchDelegate(
     override lateinit var name: String
 }
 
+/**
+ * Creates a switch option based
+ * on the data provided.
+ *
+ * @param default The default value of the option.
+ * @param block The metadata of the option.
+ */
 fun Configurable.switch(default: Boolean, block: SwitchDelegate.() -> Unit): SwitchDelegate {
     val delegate = SwitchDelegate(default)
     block(delegate)

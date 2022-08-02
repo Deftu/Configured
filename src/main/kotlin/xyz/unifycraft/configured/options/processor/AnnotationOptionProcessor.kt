@@ -6,6 +6,11 @@ import xyz.unifycraft.configured.options.OptionType
 import xyz.unifycraft.configured.options.annnotations.*
 import xyz.unifycraft.configured.utils.setAccessibility
 
+/**
+ * An option processor which finds
+ * annotation-based options and collects
+ * them.
+ */
 object AnnotationOptionProcessor : OptionProcessor {
     override fun process(configurable: Configurable): List<Option> {
         val clz = configurable::class.java

@@ -15,6 +15,13 @@ class IntegerDelegate(
     var max by Delegates.notNull<Int>()
 }
 
+/**
+ * Creates an integer option based
+ * on the data provided.
+ *
+ * @param default The default value of the option.
+ * @param block The metadata of the option.
+ */
 fun Configurable.integer(default: Int, block: IntegerDelegate.() -> Unit): IntegerDelegate {
     val delegate = IntegerDelegate(default)
     block(delegate)
