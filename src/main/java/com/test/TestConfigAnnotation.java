@@ -10,7 +10,7 @@ public class TestConfigAnnotation extends Config {
     @SwitchOption(name = "Test Switch", description = "This is a switch")
     public boolean testSwitch = false;
 
-    @TextOption(name = "Test Text", description = "This is a text")
+    @TextOption(name = "Test Text")
     public String testText = "This is a text";
 
     @PercentageOption(name = "Test Percentage", description = "This is a percentage", min = 0, max = 100)

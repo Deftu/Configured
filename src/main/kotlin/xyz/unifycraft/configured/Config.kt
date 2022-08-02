@@ -19,7 +19,6 @@ abstract class Config @JvmOverloads constructor(
     // Initialization
 
     fun initialize() {
-
         // Collect our options.
         collector.collect(this)
         serializer.initialize(this, collector)

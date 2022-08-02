@@ -66,8 +66,8 @@ open class InputBoxComponent(
         }
         if (!protected) {
             protectedButtonContainer.hide()
-            textInput.setMinWidth(90.percent)
-            textInput.setMaxWidth(90.percent)
+            textInput.setMinWidth(95.percent)
+            textInput.setMaxWidth(95.percent)
         } else {
             (textInput as UIPasswordInput).bindProtection(protectionState)
             protectedButtonContainer.unhide()

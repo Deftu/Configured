@@ -90,7 +90,6 @@ class DefaultColorComponent(
         }
 
         colorIndicator.onMouseClick {
-            println("clicked color indicator")
             if (!this@DefaultColorComponent.children.contains(colorPicker)) {
                 colorPicker.unhide()
                 colorPicker.setFloating(true)

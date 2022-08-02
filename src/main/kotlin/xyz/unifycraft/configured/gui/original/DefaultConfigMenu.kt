@@ -8,6 +8,7 @@ import gg.essential.elementa.dsl.*
 import gg.essential.elementa.effects.OutlineEffect
 import gg.essential.elementa.utils.withAlpha
 import gg.essential.universal.GuiScale
+import net.minecraft.client.resources.I18n
 import xyz.unifycraft.configured.Config
 import xyz.unifycraft.configured.Configured
 import xyz.unifycraft.configured.gui.ConfigMenu
@@ -230,7 +231,7 @@ class DefaultConfigMenu(
                 }
             }.onMouseLeave {
                 category.animate {
-                    setColorAnimation(Animations.OUT_EXP, 0.5f, Color.WHITE.toConstraint())
+                    setColorAnimation(Animations.OUT_EXP, 0.5f, (if (currentCategory == option.category) ConfiguredPalette.mainVariant else Color.WHITE).toConstraint())
                 }
             }.onMouseClick {
                 switchCategory(option.category)
@@ -293,6 +294,11 @@ class DefaultConfigMenu(
                 it is ConfigOptionComponent
             } as ConfigOptionComponent).closePopups()
         }
+        categoryContainer.allChildren.forEach { component ->
+            if (component !is UIWrappedText) return@forEach
+            if (component.getText() == category) component.setColor(ConfiguredPalette.mainVariant)
+            else component.setColor(Color.WHITE)
+        }
         optionsContainer.clearChildren()
         optionsContainer.setVerticalScrollBarComponent(optionsContainerScrollbarThumb, false)
         val options = config.collector.get().filter { option ->
@@ -320,6 +326,17 @@ class DefaultConfigMenu(
                 x = 36.5.pixels
                 y = CenterConstraint()
             }.setTextScale(1.5.pixels) childOf background
+            if (option.description.isNotBlank()) {
+                val description by UIWrappedText(I18n.format(option.description)).constrain {
+                    x = 36.5.pixels
+                    y = 47.pixels
+                    width = 50.percent
+                    color = Color.WHITE.withAlpha(128).toConstraint()
+                }.setTextScale(1.04.pixels) childOf background
+                name.constrain {
+                    y = (y boundTo description) - description.getHeight().pixels - 2.pixels
+                }
+            }
             val component by createOptionComponent(option)
             component.constrain {
                 x = 36.5.pixels(alignOpposite = true)

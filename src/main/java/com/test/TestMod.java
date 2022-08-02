@@ -80,8 +80,8 @@ public class TestMod {
         configDelegate = new com.test.TestConfigDelegate(configDir);
         configDsl = new com.test.TestConfigDsl(configDir);
 
-        logger.info("Performing tasks on annotation-based config...");
         logger.info("-----");
+        logger.info("Performing tasks on annotation-based config...");
         configAnnotation.initialize();
         logger.info("Switch: {}", configAnnotation.testSwitch);
         logger.info("Text: {}", configAnnotation.testText);
@@ -92,8 +92,8 @@ public class TestMod {
         logger.info("Switch 2: {}", configAnnotation.testSwitch2);
         logger.info("Color 2: {}", configAnnotation.testColor2);
 
-        logger.info("Performing tasks on delegate-based config...");
         logger.info("-----");
+        logger.info("Performing tasks on delegate-based config...");
         configDelegate.initialize();
         logger.info("Switch: {}", configDelegate.getTestSwitch());
         logger.info("Text: {}", configDelegate.getTestText());
@@ -102,8 +102,8 @@ public class TestMod {
         logger.info("Color: {}", configDelegate.getTestColor());
         logger.info("File: {}", configDelegate.getTestFile());
 
-        logger.info("Performing tasks on dsl-based config...");
         logger.info("-----");
+        logger.info("Performing tasks on dsl-based config...");
         configDsl.initialize();
         logger.info("Switch: {}", configDsl.getTestSwitch());
         logger.info("Text: {}", configDsl.getTestText());
@@ -118,7 +118,7 @@ public class TestMod {
 
     private void tick() {
         if (!(UScreen.getCurrentScreen() instanceof UScreen)) {
-            UScreen.displayScreen(configDsl.menu());
+            UScreen.displayScreen(configAnnotation.menu());
         }
     }
 }

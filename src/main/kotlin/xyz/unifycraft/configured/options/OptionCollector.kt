@@ -3,15 +3,13 @@ package xyz.unifycraft.configured.options
 import xyz.unifycraft.configured.Config
 import xyz.unifycraft.configured.Configurable
 import xyz.unifycraft.configured.options.processor.AnnotationOptionProcessor
-import xyz.unifycraft.configured.options.processor.DelegateOptionProcessor
-import xyz.unifycraft.configured.options.processor.DslOptionProcessor
+import xyz.unifycraft.configured.options.processor.ConfigurableInternalOptionProcessor
 
 class OptionCollector {
     private val options = mutableListOf<Option>()
     private val processors = mutableListOf(
         AnnotationOptionProcessor,
-        DelegateOptionProcessor,
-        DslOptionProcessor
+        ConfigurableInternalOptionProcessor
     )
 
     var initialized = false
