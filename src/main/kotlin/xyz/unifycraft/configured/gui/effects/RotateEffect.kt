@@ -3,6 +3,9 @@ package xyz.unifycraft.configured.gui.effects
 import gg.essential.elementa.effects.Effect
 import gg.essential.universal.UMatrixStack
 
+/**
+ * Rotates the component by the specified angle.
+ */
 class RotateEffect(
     var angle: Float
 ) : Effect() {

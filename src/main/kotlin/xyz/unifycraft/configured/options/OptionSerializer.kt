@@ -10,6 +10,12 @@ import xyz.unifycraft.configured.Config
 import java.awt.Color
 import java.io.File
 
+/**
+ * The class used for serializing options
+ * into a JSON file for saving. This should
+ * not be used directly, and should be used
+ * by calling the wrapper functions in [Config].
+ */
 class OptionSerializer {
     private lateinit var config: Config
     private lateinit var collector: OptionCollector

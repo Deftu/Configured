@@ -14,6 +14,10 @@ import xyz.unifycraft.configured.gui.components.NumericInputBoxComponent
 import xyz.unifycraft.configured.gui.effects.RotateEffect
 import xyz.unifycraft.configured.options.Option
 
+/**
+ * Internal component used
+ * for the Configured GUI.
+ */
 class DefaultIntegerComponent(
     override val option: Option
 ) : ConfigOptionComponent() {

@@ -19,6 +19,10 @@ import javax.swing.JFileChooser
 //$$ import org.lwjgl.util.tinyfd.TinyFileDialogs
 //#endif
 
+/**
+ * Internal component used
+ * for the Configured GUI.
+ */
 class DefaultFileComponent(
     override val option: Option
 ) : ConfigOptionComponent() {

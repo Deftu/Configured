@@ -10,6 +10,10 @@ import xyz.unifycraft.configured.gui.ConfigOptionComponent
 import xyz.unifycraft.configured.gui.ConfiguredPalette
 import xyz.unifycraft.configured.options.Option
 
+/**
+ * Internal component used
+ * for the Configured GUI.
+ */
 class DefaultButtonComponent(
     override val option: Option
 ) : ConfigOptionComponent() {

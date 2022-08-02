@@ -14,6 +14,9 @@ import gg.essential.elementa.state.BasicState
 import xyz.unifycraft.configured.gui.ConfiguredPalette
 import java.awt.Color
 
+/**
+ * A stylized input box for the Configured GUI.
+ */
 open class InputBoxComponent(
     defaultValue: String = "",
     protected: Boolean = false,

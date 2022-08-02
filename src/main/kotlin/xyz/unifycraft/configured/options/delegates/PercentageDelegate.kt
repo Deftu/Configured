@@ -15,6 +15,13 @@ class PercentageDelegate(
     var max by Delegates.notNull<Int>()
 }
 
+/**
+ * Creates a percentage option based
+ * on the data provided.
+ *
+ * @param default The default value of the option.
+ * @param block The metadata of the option.
+ */
 fun Configurable.percentage(default: Float, block: PercentageDelegate.() -> Unit): PercentageDelegate {
     val delegate = PercentageDelegate(default)
     block(delegate)

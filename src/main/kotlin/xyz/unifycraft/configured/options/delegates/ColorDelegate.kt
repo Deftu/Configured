@@ -14,6 +14,13 @@ class ColorDelegate(
     var alpha = false
 }
 
+/**
+ * Creates a color option based
+ * on the data provided.
+ *
+ * @param default The default value of the option.
+ * @param block The metadata of the option.
+ */
 fun Configurable.color(default: Color, block: ColorDelegate.() -> Unit): ColorDelegate {
     val delegate = ColorDelegate(default)
     block(delegate)

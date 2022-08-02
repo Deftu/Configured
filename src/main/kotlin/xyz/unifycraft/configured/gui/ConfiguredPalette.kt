@@ -2,6 +2,10 @@ package xyz.unifycraft.configured.gui
 
 import java.awt.Color
 
+/**
+ * Class storing the colour palette
+ * for Configured's GUIs.
+ */
 object ConfiguredPalette {
     val main = Color(0x8416B8)
     val mainVariant = Color(0x6E0E9B)

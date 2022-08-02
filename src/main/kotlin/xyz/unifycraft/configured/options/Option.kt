@@ -2,6 +2,10 @@ package xyz.unifycraft.configured.options
 
 import net.minecraft.client.resources.I18n
 
+/**
+ * Class representing a single option in the config,
+ * holding metadata and values for the option.
+ */
 data class Option(
     val name: String,
     private val localizedNameKey: String,

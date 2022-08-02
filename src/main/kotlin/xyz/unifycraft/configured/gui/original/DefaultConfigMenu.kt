@@ -20,6 +20,13 @@ import xyz.unifycraft.configured.options.Option
 import xyz.unifycraft.configured.options.OptionType
 import java.awt.Color
 
+/**
+ * Menu used for interaction
+ * with configs made using Configured.
+ * If you'd like to fetch an instance of
+ * this class to open a menu in your mod,
+ * use [Config.menu].
+ */
 class DefaultConfigMenu(
     val config: Config,
     title: String

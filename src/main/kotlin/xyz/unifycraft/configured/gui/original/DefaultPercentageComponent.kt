@@ -14,6 +14,9 @@ import xyz.unifycraft.configured.options.Option
 import java.text.DecimalFormat
 
 /**
+ * Internal component used
+ * for the Configured GUI.
+ *
  * Maths for slider functionality adapted from EvergreenHUD under GPL 3.0
  * https://github.com/isXander/EvergreenHUD/blob/86b881510698d9e75b519ada0747da12d89037ff/LICENSE.md
  */

@@ -19,6 +19,9 @@ import java.awt.Color
 import kotlin.math.roundToInt
 
 /**
+ * Internal component used
+ * for the Configured GUI.
+ *
  * Adapted from Vigilance under LGPL 3.0
  * https://github.com/EssentialGG/Vigilance/blob/2c59ec0e0b4328f1f0674a40f9de699c0add0e91/LICENSE
  */

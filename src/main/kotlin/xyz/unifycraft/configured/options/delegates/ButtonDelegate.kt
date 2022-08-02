@@ -13,6 +13,13 @@ class ButtonDelegate(
     var text = ""
 }
 
+/**
+ * Creates a button option based
+ * on the data provided.
+ *
+ * @param runnable The action performed when the button is clicked.
+ * @param block The metadata of the option.
+ */
 fun Configurable.button(runnable: Runnable, block: ButtonDelegate.() -> Unit): ButtonDelegate {
     val delegate = ButtonDelegate(runnable)
     block(delegate)
