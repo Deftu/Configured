@@ -19,6 +19,9 @@ public class TestConfigAnnotation extends Config {
     @IntegerOption(name = "Test Integer", description = "This is an integer", min = 0, max = 10)
     public int testInteger = 5;
 
+    @DropdownOption(name = "Test Dropdown", description = "This is a dropdown", options = {"Option 1", "Option 2", "Option 3"})
+    public int testDropdown = 0;
+
     @ColorOption(name = "Test Color", description = "This is a color")
     public Color testColor = Color.RED;
 

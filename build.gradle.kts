@@ -25,3 +25,30 @@ preprocess {
     forge11502.link(forge11202)
     forge11202.link(forge10809)
 }
+
+if (project.hasProperty("unifycraft.publishing.username") && project.hasProperty("unifycraft.publishing.password")) {
+    val versions = listOf(
+        "1.19-fabric",
+        "1.18.1-forge",
+        "1.18.1-fabric",
+        "1.17.1-forge",
+        "1.17.1-fabric",
+        "1.16.2-fabric",
+        "1.16.2-forge",
+        "1.15.2-forge",
+        "1.12.2-forge",
+        "1.8.9-forge"
+    )
+    tasks.register("publishAllToReleases") {
+        group = "configured"
+        versions.forEach { version ->
+            dependsOn(":$version:publishMavenJavaToUnifyCraftReleaseRepository")
+        }
+    }
+    tasks.register("publishAllToSnapshots") {
+        group = "configured"
+        versions.forEach { version ->
+            dependsOn(":$version:publishMavenJavaToUnifyCraftSnapshotsRepository")
+        }
+    }
+}

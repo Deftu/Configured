@@ -87,6 +87,7 @@ public class TestMod {
         logger.info("Text: {}", configAnnotation.testText);
         logger.info("Percentage: {}", configAnnotation.testPercentage);
         logger.info("Integer: {}", configAnnotation.testInteger);
+        logger.info("Dropdown: {}", configAnnotation.testDropdown);
         logger.info("Color: {}", configAnnotation.testColor);
         logger.info("File: {}", configAnnotation.testFile);
         logger.info("Switch 2: {}", configAnnotation.testSwitch2);

@@ -56,7 +56,7 @@ dependencies {
 afterEvaluate {
     publishing.publications.getByName<MavenPublication>("mavenJava") {
         group = modData.group
-        artifactId = base.archivesName.get()
+        artifactId = "${modData.name}-${mcData.versionStr}-${mcData.loader.name}"
         version = modData.version
     }
 }

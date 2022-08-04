@@ -52,6 +52,27 @@ fun Configurable.text(field: Field, default: String, block: TextOptionScope.() -
 fun Configurable.text(property: KProperty<*>, default: String, block: TextOptionScope.() -> Unit) =
     text(property.toJavaField(), default, block)
 
+// Dropdown
+
+fun Configurable.dropdown(field: Field, default: Int, block: DropdownOptionScrope.() -> Unit) {
+val scope = DropdownOptionScrope(default, field)
+    block(scope)
+    field.setAccessibility(true)
+    field.set(this, default)
+    options.add(Option(scope.name, scope.localizedName, scope.description, scope.category, scope.default, scope.hidden, scope.tags, OptionType.DROPDOWN, mapOf(
+        "options" to scope.options
+    ), {
+        scope.field.setAccessibility(true)
+        scope.field.get(this) ?: scope.default
+    }, {
+        scope.field.setAccessibility(true)
+        scope.field.set(this, it)
+    }))
+}
+
+fun Configurable.dropdown(property: KProperty<*>, default: Int, block: DropdownOptionScrope.() -> Unit) =
+    dropdown(property.toJavaField(), default, block)
+
 // Percentage
 
 fun Configurable.percentage(field: Field, default: Float, block: PercentageOptionScope.() -> Unit) {

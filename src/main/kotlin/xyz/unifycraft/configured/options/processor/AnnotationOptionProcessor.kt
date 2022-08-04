@@ -60,6 +60,7 @@ object AnnotationOptionProcessor : OptionProcessor {
         is IntegerOption -> OptionData(annotation.name, annotation.localizedName, annotation.description, annotation.hidden, annotation.tags, OptionType.INTEGER, mapOf("min" to annotation.min, "max" to annotation.max))
         is ColorOption -> OptionData(annotation.name, annotation.localizedName, annotation.description, annotation.hidden, annotation.tags, OptionType.COLOR, mapOf("alpha" to annotation.alpha))
         is FileOption -> OptionData(annotation.name, annotation.localizedName, annotation.description, annotation.hidden, annotation.tags, OptionType.FILE)
+        is DropdownOption -> OptionData(annotation.name, annotation.localizedName, annotation.description, annotation.hidden, annotation.tags, OptionType.DROPDOWN, mapOf("options" to annotation.options.toList()))
         is ButtonOption -> OptionData(annotation.name, annotation.localizedName, annotation.description, annotation.hidden, annotation.tags, OptionType.BUTTON, mapOf("text" to annotation.text))
         else -> null
     }

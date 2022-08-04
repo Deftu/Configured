@@ -350,6 +350,7 @@ class DefaultConfigMenu(
         OptionType.INTEGER -> DefaultIntegerComponent(option)
         OptionType.FILE -> DefaultFileComponent(option)
         OptionType.TEXT -> DefaultTextComponent(option)
+        OptionType.DROPDOWN -> DefaultDropdownComponent(option)
         OptionType.PERCENTAGE -> DefaultPercentageComponent(option)
         OptionType.COLOR -> DefaultColorComponent(option)
         OptionType.SWITCH -> DefaultSwitchComponent(option)
