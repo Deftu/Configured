@@ -1,11 +1,9 @@
+import groovy.lang.MissingPropertyException
+
 pluginManagement {
     repositories {
-        // Default repositories
-        gradlePluginPortal()
-        mavenCentral()
-
         // Repositories
-        maven("https://maven.unifycraft.xyz/releases")
+        maven("https://maven.enhancedpixel.xyz/releases")
         maven("https://maven.fabricmc.net")
         maven("https://maven.architectury.dev/")
         maven("https://maven.minecraftforge.net")
@@ -14,18 +12,25 @@ pluginManagement {
         maven("https://jitpack.io/")
 
         // Snapshots
-        maven("https://maven.unifycraft.xyz/snapshots")
-        maven("https://s01.oss.sonatype.org/content/groups/public/")
+        maven("https://maven.enhancedpixel.xyz/snapshots")
         mavenLocal()
+
+        // Default repositories
+        gradlePluginPortal()
+        mavenCentral()
     }
 
     plugins {
-        id("xyz.unifycraft.gradle.multiversion-root") version("1.10.1")
+        val kotlin = "1.6.21"
+        kotlin("jvm") version(kotlin)
+        kotlin("plugin.serialization") version(kotlin)
+
+        val egpt = "1.13.8"
+        id("xyz.enhancedpixel.gradle.multiversion-root") version(egpt)
     }
 }
 
-val projectName: String = extra["mod.name"]?.toString()
-    ?: throw groovy.lang.MissingPropertyException("mod.name is not set.")
+val projectName: String = extra["mod.name"]?.toString() ?: throw MissingPropertyException("mod.name is not set.")
 rootProject.name = projectName
 rootProject.buildFileName = "build.gradle.kts"
 
@@ -33,13 +38,14 @@ listOf(
     "1.8.9-forge",
     "1.12.2-forge",
     "1.15.2-forge",
-    "1.16.2-forge",
-    "1.16.2-fabric",
+    "1.16.5-forge",
+    "1.16.5-fabric",
     "1.17.1-fabric",
     "1.17.1-forge",
-    "1.18.1-fabric",
-    "1.18.1-forge",
-    "1.19-fabric"
+    "1.18.2-fabric",
+    "1.18.2-forge",
+    "1.19.2-fabric",
+    "1.19.2-forge"
 ).forEach { version ->
     include(":$version")
     project(":$version").apply {
