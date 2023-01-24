@@ -1,20 +1,39 @@
-import xyz.enhancedpixel.gradle.utils.GameSide
+/*
+ * This file is a part of the Configured library
+ * Copyright (C) 2023 Deftu (https://deftu.xyz)
+ *
+ * DO NOT remove or alter copyright notices, or remove this file header.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+import xyz.deftu.gradle.utils.GameSide
 
 plugins {
     `java-library`
     kotlin("jvm")
     `maven-publish`
-    id("xyz.enhancedpixel.gradle.multiversion")
-    id("xyz.enhancedpixel.gradle.tools")
-    id("xyz.enhancedpixel.gradle.tools.loom")
-    id("xyz.enhancedpixel.gradle.tools.blossom")
-    id("xyz.enhancedpixel.gradle.tools.resources")
-    id("xyz.enhancedpixel.gradle.tools.shadow")
+    id("xyz.deftu.gradle.multiversion")
+    id("xyz.deftu.gradle.tools")
+    id("xyz.deftu.gradle.tools.loom")
+    id("xyz.deftu.gradle.tools.blossom")
+    id("xyz.deftu.gradle.tools.resources")
+    id("xyz.deftu.gradle.tools.shadow")
 }
 
 loomHelper {
-    disableRunConfigs(GameSide.CLIENT)
-    disableRunConfigs(GameSide.SERVER)
     useProperty("elementa.dev", "true", GameSide.CLIENT)
 }
 
@@ -56,7 +75,7 @@ dependencies {
 
     if (mcData.version >= 11602) {
         val lwjglVersion = "3.2.2"
-        implementation("org.lwjgl:lwjgl-tinyfd:$lwjglVersion")
+        bundle("org.lwjgl:lwjgl-tinyfd:$lwjglVersion")
     }
 
     // We need Fabric API for testing purposes.
@@ -70,10 +89,10 @@ dependencies {
     }}")!!)
 }
 
-afterEvaluate {
-    publishing.publications.getByName<MavenPublication>("mavenJava") {
-        group = modData.group
-        artifactId = "${modData.name}-${mcData.versionStr}-${mcData.loader.name}".toLowerCase()
-        version = modData.version
+tasks {
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
     }
 }

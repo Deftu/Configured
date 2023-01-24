@@ -6,15 +6,21 @@
     "name": "${mod_name}",
     "description": "Simple configuration library made for Minecraft modders.",
     "authors": [
-        "UnifyCraft Team"
+        "EnhancedPixel Team"
     ],
     "contact": {
-        "homepage": "https://www.unifycraft.xyz/",
-        "sources": "https://github.com/UnifyCraft/Configured"
+        "homepage": "https://enhancedpixel.xyz/",
+        "sources": "https://github.com/EnhancedPixel/Configured"
     },
 
     "license": "LGPL-3.0",
     "icon": "assets/configured/logo.png",
+
+    "entrypoints": {
+        "client": [
+            "com.test.TestMod"
+        ]
+    },
 
     "depends": {
         "fabricloader": ">=0.12.12"

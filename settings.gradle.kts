@@ -1,9 +1,30 @@
+/*
+ * This file is a part of the Configured library
+ * Copyright (C) 2023 Deftu (https://deftu.xyz)
+ *
+ * DO NOT remove or alter copyright notices, or remove this file header.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 import groovy.lang.MissingPropertyException
 
 pluginManagement {
     repositories {
         // Repositories
-        maven("https://maven.enhancedpixel.xyz/releases")
+        maven("https://maven.deftu.xyz/releases")
         maven("https://maven.fabricmc.net")
         maven("https://maven.architectury.dev/")
         maven("https://maven.minecraftforge.net")
@@ -12,7 +33,7 @@ pluginManagement {
         maven("https://jitpack.io/")
 
         // Snapshots
-        maven("https://maven.enhancedpixel.xyz/snapshots")
+        maven("https://maven.deftu.xyz/snapshots")
         mavenLocal()
 
         // Default repositories
@@ -25,8 +46,8 @@ pluginManagement {
         kotlin("jvm") version(kotlin)
         kotlin("plugin.serialization") version(kotlin)
 
-        val egpt = "1.13.8"
-        id("xyz.enhancedpixel.gradle.multiversion-root") version(egpt)
+        val dgt = "1.4.0"
+        id("xyz.deftu.gradle.multiversion-root") version(dgt)
     }
 }
 

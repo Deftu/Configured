@@ -1,30 +1,45 @@
+/*
+ * This file is a part of the Configured library
+ * Copyright (C) 2023 Deftu (https://deftu.xyz)
+ *
+ * DO NOT remove or alter copyright notices, or remove this file header.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 package com.test;
 
 import com.google.common.base.Stopwatch;
-import gg.essential.universal.UScreen;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.io.File;
 
+import xyz.deftu.configured.Configured;
+
 //#if FORGE
 //#if MC<=11202
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 //#else
-//$$ import net.minecraftforge.eventbus.api.SubscribeEvent;
-//$$ import net.minecraftforge.event.TickEvent;
-//$$ import net.minecraftforge.common.MinecraftForge;
 //$$ import net.minecraftforge.fml.common.Mod;
 //$$
 //#endif
 //#else
 //#if FABRIC
 //$$ import net.fabricmc.api.ClientModInitializer;
-//$$ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 //#endif
 //#endif
 
@@ -48,31 +63,26 @@ public class TestMod {
     //#if FABRIC
     //$$ public void onInitializeClient() {
     //$$     initialize();
-    //$$     ClientTickEvents.START_CLIENT_TICK.register(event -> tick());
     //$$ }
     //#else
     //#if MC<=11202
     @EventHandler
     public void fmlInitialize(FMLInitializationEvent event) {
         initialize();
-        MinecraftForge.EVENT_BUS.register(this);
     }
     //#else
     //$$ {
     //$$     initialize();
-    //$$     MinecraftForge.EVENT_BUS.register(this);
     //$$ }
     //#endif
-
-    @SubscribeEvent
-    public void tick(TickEvent.ClientTickEvent event) {
-        tick();
-    }
     //#endif
 
     private void initialize() {
         File configDir = new File("config");
         Stopwatch stopwatch = Stopwatch.createStarted();
+
+        Configured.initialize();
+
         logger.info("Loading TestMod");
         logger.info(">>>>>>>>>>");
 
@@ -115,11 +125,5 @@ public class TestMod {
 
         long elapsed = stopwatch.elapsed(java.util.concurrent.TimeUnit.MILLISECONDS);
         logger.info("TestMod loaded in {}ms. That's {}ms per config!", elapsed, elapsed / 3);
-    }
-
-    private void tick() {
-        if (!(UScreen.getCurrentScreen() instanceof UScreen)) {
-            UScreen.displayScreen(configAnnotation.menu());
-        }
     }
 }
